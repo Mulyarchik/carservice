@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+NickForum - Forum for coders
+{% endblock %}
+
+{% block content %}
+
+<div class="container-xl" xmlns="http://www.w3.org/1999/html">
+    <h1>Day 1</h1>
+
+    {% for time in times %}
+        {% if not time.customer_id %}
+            <a href="{% url 'vlads_app:profile' day.id time.id %}" role="button" style="text-decoration: none;">
+                <button type="button" class="btn btn-secondary">{{ time.time|date:"H:i" }}</button>
+            </a>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock %}
