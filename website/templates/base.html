@@ -17,6 +17,10 @@
           integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
             integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+
     <link rel="icon" type="image/png" href="/media/logo.png">
     {% load static %}
     <link rel="stylesheet" href="{% static 'static_root/css/stylesheet.css' %}" type="text/css">
@@ -24,7 +28,7 @@
 <body>
 <nav class="navbar navbar-expand-lg bg-light" id="navbar">
     <div class="container-xl">
-        <a class="navbar-brand" href="/"><img src="/media/logo.png" width="40" height="33" alt="logo">CarService</a>
+        <a class="navbar-brand" href="/"><img src="/media/logo.png" width="40" height="40" alt="logo">&nbsp;CarService</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -32,10 +36,27 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/services/">Add Autoservice</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/registration/">Register</a>
                 </li>
             </ul>
+            {% if request.user.is_authenticated %}
+            <div class="search" id="loginned">
+                <ul class="me-auto mb-lg-0">
+                    &nbsp;{{ user.username }}&ensp;
 
+                </ul>
+            </div>
+            {% else %}
+            <div class="d-flex" id="not_loginned">
+                <ul class="me-auto mb-lg-0">
+                    <a class="btn btn-link" href="/login" role="button" style="text-decoration: none;">Sign In</a>
+                    <a class="btn btn-primary" href="/register" role="button">Sing Up</a>
+                </ul>
+            </div>
+            {% endif %}
 
         </div>
     </div>

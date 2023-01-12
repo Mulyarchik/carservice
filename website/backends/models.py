@@ -11,7 +11,8 @@ class Service(models.Model):
     website = models.URLField(max_length=200, verbose_name='URL')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, blank=True)
     email = models.EmailField(verbose_name='Email')
-    working_hours = models.DurationField(verbose_name='Working Hours')
+    opening_time = models.TimeField(verbose_name='Opening Time')
+    closing_time = models.TimeField(verbose_name='Closing Time')
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,12}$',
                                  message="Phone number must be entered in the format: '+375(29)12-12-123'. Up to 12 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=13, blank=True)

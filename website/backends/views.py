@@ -1,21 +1,91 @@
 import calendar
 import datetime
 
+# from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import login, logout
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .forms import CustomerForm
+from .forms import CustomerForm, UserForm, LoginUserForm, ServiceForm
 from .models import Date, Time, Customer
-#from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
-from django.conf import settings
+
 
 # from .forms import DateForm ####DEFAULT_FROM_EMAIL, RECIPIENTS_EMAIL
 
 
 def home(request):
     return render(request, 'home.html', locals())
+
+
+def user_signup(request):
+    error = ''
+    if request.method == 'POST':
+        user_form = UserForm(request.POST)
+
+        if user_form.is_valid():
+            user = user_form.save(commit=False)
+            user_form.save()
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            messages.success(request, "Вы успешно зарегестрировались")
+            return redirect('/')
+        else:
+            messages.error(request, "Ошибка регистрации")
+        context = {
+            'user_form': user_form,
+            'error': error
+        }
+    else:
+        context = {
+            'user_form': UserForm(),
+            'error': error
+        }
+    return render(request, 'signup.html', context)
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginUserForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+        else:
+            messages.error(request, "Неправильное имя пользователя/пароль!")
+        return redirect('/')
+    else:
+        form = LoginUserForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, 'login.html', context=context)
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('/')
+
+
+def services(request):
+    if request.method == 'POST':
+        form = ServiceForm(data=request.POST)
+        print(request.POST)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.owner = request.user
+            data.save()
+        else:
+            messages.error(request, "Вы указали неверные данные!")
+        return redirect('/')
+    else:
+        form = ServiceForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'services.html', context=context)
 
 
 def backends(request):
@@ -72,6 +142,7 @@ def choose_time(request, day_id):
         'customers': customers
     }
     return render(request, 'backends2.html', context=context)
+
 
 def profile(request, day_id, time_id):
     if request.method == 'POST':

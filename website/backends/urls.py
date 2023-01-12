@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
@@ -8,7 +7,11 @@ app_name = 'vlads_app'
 
 urlpatterns = [
                   path('', home, name='home'),
-                  path('registration/', backends, name='backends'),
+                  path('register/', user_signup, name='user_signup'),
+                  path('login/', user_login, name='user_login'),
+                  path('logout/', user_logout, name='logout'),
+                  path('services/', services, name='services'),
+                  # path('registration/', backends, name='backends'),
                   path('date/<int:day_id>/time/', choose_time, name='choose_time'),
                   path('date/<int:day_id>/time/<int:time_id>/', profile, name='profile'),
 
