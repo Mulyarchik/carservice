@@ -44,6 +44,16 @@ NickForum - Forum for coders
                         <div class="card-text mt-3">
                             <div class="row">
                                 <div class="col">
+                                    <label for="id_working_days">Working days:</label>
+                                    <select class="js-example-basic-multiple form-control" name="working_days"
+                                            multiple="multiple"
+                                            style="width: 150%" id="id_working_days">
+                                        {% for day in days %}
+                                        <option value="{{ day.id }}">{{ day.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col">
                                     <label for="id_opening_time">Opening time:</label>
                                     <input type="text" class="form-control" id="id_opening_time" name="opening_time"
                                            placeholder="janem">
@@ -71,6 +81,14 @@ NickForum - Forum for coders
     </div>
 </div>
 <script>
+    $(document).ready(function () {
+
+        $('.js-example-basic-multiple').select2({
+            width: '100%'
+        });
+        $(".js-example-responsive").select2({});
+    });
+
     $(function () {
         $("#id_opening_time").timepicker({
             timeFormat: 'HH:mm',
@@ -98,4 +116,13 @@ NickForum - Forum for coders
         });
     });
 </script>
+<style>
+    p {
+        color: red;
+    }
+
+    .text {
+        font-size: 24px;
+    }
+</style>
 {% endblock %}

@@ -114,6 +114,13 @@ class ServiceForm(forms.ModelForm):
                                        'placeholder': 'for_example@mail.ru'
                                        }))
 
+    working_days = forms.CharField(
+        label=("Working Days"),
+        widget=forms.TextInput(attrs={'class': 'form-control',
+                                      'type': 'text',
+                                      'required': 'true',
+                                      }))
+
     opening_time = forms.TimeField(input_formats=['%H:%M'],
                                    label=("Opening Time"),
                                    widget=forms.TimeInput(attrs={'class': 'form-control', }))
@@ -132,7 +139,7 @@ class ServiceForm(forms.ModelForm):
 
     class Meta:
         model = Service
-        fields = ('name', 'address', 'website', 'email', 'opening_time', 'closing_time', 'phone_number')
+        fields = ('name', 'address', 'website', 'email', 'working_days', 'opening_time', 'closing_time', 'phone_number')
 
 
 class CustomerForm(forms.ModelForm):

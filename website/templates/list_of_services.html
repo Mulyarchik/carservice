@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+Sign in to NickForum
+{% endblock %}
+
+{% block content %}
+
+<div class="container-sm">
+    <div class="card mb-4 mt-4">
+        <div class="card-body">
+            <div class="card-text mt-3">
+                <h3>Для заказа талона выборите станцию:</h3>
+            </div>
+            {% for service in services %}
+            <div class="card mb-4 mt-4">
+                <div class="card-body">
+                    <a href="{% url 'vlads_app:services2' service.id %}" role="button" style="text-decoration: none;">
+                        {{ service }}
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

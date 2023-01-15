@@ -10,7 +10,7 @@ NickForum - Forum for coders
 
     {% for time in times %}
         {% if not time.customer_id %}
-            <a href="{% url 'vlads_app:profile' day.id time.id %}" role="button" style="text-decoration: none;">
+            <a href="{% url 'vlads_app:profile2' service.id day.id time.id %}" role="button" style="text-decoration: none;">
                 <button type="button" class="btn btn-secondary">{{ time.time|date:"H:i" }}</button>
             </a>
         {% endif %}

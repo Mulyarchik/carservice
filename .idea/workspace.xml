@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a5dd9e61-da55-4d1f-b37a-3937953d3550" name="Changes" comment="add models: service, date, time, customer. adding an entry for a specific date">
-      <change afterPath="$PROJECT_DIR$/website/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/templates/services.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/templates/signup.html" afterDir="false" />
+    <list default="true" id="a5dd9e61-da55-4d1f-b37a-3937953d3550" name="Changes" comment="the ability to add a service">
+      <change afterPath="$PROJECT_DIR$/website/templates/list_of_services.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/backends/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/backends/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/backends/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/backends/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/backends/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/backends.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/backends.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/backends2.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/backends2.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/services.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/services.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/website/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/website/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +23,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
+        <option value="CSS File" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -43,10 +47,39 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/v_mul/PycharmProjects/website_carservice&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python.ffff">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\v_mul\PycharmProjects\website_carservice\website" />
+      <recent name="C:\Users\v_mul\PycharmProjects\website_carservice\website\static\services" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.test">
+    <configuration name="dsfsdfsdfs__" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="website_carservice" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/website/backends" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/website/backends/dsfsdfsdfs__.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="ffff" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="website_carservice" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -137,9 +170,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.dsfsdfsdfs__" />
         <item itemvalue="Python.test_mail" />
         <item itemvalue="Python.sendgrid_test" />
-        <item itemvalue="Python.test" />
         <item itemvalue="Python.ffff" />
       </list>
     </recent_temporary>
@@ -160,7 +194,11 @@
       <workItem from="1673275920619" duration="13455000" />
       <workItem from="1673348739744" duration="27429000" />
       <workItem from="1673529775582" duration="7751000" />
-      <workItem from="1673545564395" duration="8275000" />
+      <workItem from="1673545564395" duration="8356000" />
+      <workItem from="1673630068403" duration="14817000" />
+      <workItem from="1673697980104" duration="389000" />
+      <workItem from="1673702758377" duration="5297000" />
+      <workItem from="1673782862138" duration="3276000" />
     </task>
     <task id="LOCAL-00001" summary="create app &quot;backends&quot;">
       <created>1673086621076</created>
@@ -176,7 +214,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673466621067</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="the ability to add a service">
+      <created>1673554126339</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1673554126339</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,10 +241,23 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="create app &quot;backends&quot;" />
     <MESSAGE value="add models: service, date, time, customer. adding an entry for a specific date" />
-    <option name="LAST_COMMIT_MESSAGE" value="add models: service, date, time, customer. adding an entry for a specific date" />
+    <MESSAGE value="the ability to add a service" />
+    <option name="LAST_COMMIT_MESSAGE" value="the ability to add a service" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/website_carservice$test.coverage" NAME="test Coverage Results" MODIFIED="1673352816896" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/website/backends" />
+    <SUITE FILE_PATH="coverage/website_carservice$test.coverage" NAME="test Coverage Results" MODIFIED="1673705876357" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/website/backends" />
+    <SUITE FILE_PATH="coverage/website_carservice$dsfsdfsdfs__.coverage" NAME="dsfsdfsdfs__ Coverage Results" MODIFIED="1673632829831" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/website/backends" />
     <SUITE FILE_PATH="coverage/website_carservice$sendgrid.coverage" NAME="sendgrid_test Coverage Results" MODIFIED="1673436648293" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/website/backends" />
     <SUITE FILE_PATH="coverage/website_carservice$test_mail.coverage" NAME="test_mail Coverage Results" MODIFIED="1673447998750" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/website/backends" />
     <SUITE FILE_PATH="coverage/website_carservice$ffff.coverage" NAME="ffff Coverage Results" MODIFIED="1673349898515" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/website/backends" />

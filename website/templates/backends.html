@@ -7,75 +7,143 @@ NickForum - Forum for coders
 {% block content %}
 
 <div class="container-xl">
-    <div class="card mb-3 mt-4">
+    <div class="card-text mb-4 mt-4">
         <div class="card-body">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th scope="col">Понедельник</th>
-                    <th scope="col">Вторник</th>
-                    <th scope="col">Среда</th>
-                    <th scope="col">Четверг</th>
-                    <th scope="col">Пятница</th>
-                    <th scope="col">Суббота</th>
-                    <th scope="col">Воскресенье</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    {% for day in my_list1 %}
-                    {% if day != 0 %}
-                    <td>
-                        <a href="{% url 'vlads_app:choose_time' day %}" role="button"
-                           style="text-decoration: none;">{{ day }}</a>
-                    </td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                    {% endfor %}
-                </tr>
-                <tr>
-                    {% for day in my_list2 %}
-                    {% if day != 0 %}
-                    <td><a href="{% url 'vlads_app:choose_time' day %}" role="button"
-                           style="text-decoration: none;">{{ day }}</a></td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                    {% endfor %}
-                </tr>
-                <tr>
-                    {% for day in my_list3 %}
-                    {% if day != 0 %}
-                    <td><a href="{% url 'vlads_app:choose_time' day %}" role="button"
-                           style="text-decoration: none;">{{ day }}</a></td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                    {% endfor %}
-                </tr>
-                <tr>
-                    {% for day in my_list4 %}
-                    {% if day != 0 %}
-                    <td><a href="{% url 'vlads_app:choose_time' day %}" role="button"
-                           style="text-decoration: none;">{{ day }}</a></td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                    {% endfor %}
-                </tr>
-                <tr>
-                    {% for day in my_list5 %}
-                    {% if day != 0 %}
-                    <td><a href="{% url 'vlads_app:choose_time' day %}" role="button"
-                           style="text-decoration: none;">{{ day }}</a></td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                    {% endfor %}
-                </tr>
-                </tbody>
-            </table>
+            <div class="container px-5">
+                <div class="container px-5">
+                <div class="container px-5">
+                <div class="row">
+                <table class="table table-bordered border-primary">
+                    <thead>
+                    <tr>
+                        <th scope="col"><div align="center">&ensp;Mon &ensp;</div></th>
+                        <th scope="col"><div align="center">&ensp;Tue &ensp;</div></th>
+                        <th scope="col"><div align="center">&ensp;Wed &ensp;</div></th>
+                        <th scope="col"><div align="center">&ensp;Thu &ensp;</div></th>
+                        <th scope="col"><div align="center">&ensp;Fri &ensp;</div></th>
+                        <th scope="col"><div align="center">&ensp;Sat &ensp;</div></th>
+                        <th scope="col"><div align="center">&ensp;Sun &ensp;</div></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        {% for day in my_list1 %}
+                            {% if day != 0 %}
+                                {% if day not in total_work_days %}
+
+                                    <td class="table-active">
+                                        <div class="card-text mb-2 mt-2" align="center">
+                                            <h5>{{ day }}</h5>
+                                        </div>
+                                    </td>
+                                    {% else %}
+                                    <td>
+                                        <div class="card-text mb-2 mt-2" align="center">
+                                            <a href="{% url 'vlads_app:services2_time' service.id day.id %}" role="button"
+                                               style="text-decoration: none;"><h5>{{ day }}</h5></a>
+                                        </div>
+                                    </td>
+
+                                {% endif %}
+                            {% else %}
+                                <td class="table-active"></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for day in my_list2 %}
+                            {% if day != 0 %}
+                                {% if day not in total_work_days %}
+                                <td class="table-active">
+                                    <div class="card-text mb-2 mt-2" align="center">
+                                        <h5>{{ day }}</h5>
+                                    </div>
+                                </td>
+                                {% else %}
+                                <td>
+                                    <div class="card-text mb-2 mt-2" align="center">
+                                        <a href="{% url 'vlads_app:services2_time' service.id day %}" role="button"
+                                                   style="text-decoration: none;"><h5>{{ day }}</h5></a>
+                                    </div>
+                                </td>
+                                 {% endif %}
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for day in my_list3 %}
+                            {% if day != 0 %}
+                                {% if day not in total_work_days %}
+                                <td class="table-active">
+                                    <div class="card-text mb-2 mt-2" align="center">
+                                        <h5>{{ day }}</h5>
+                                    </div>
+                                </td>
+                                {% else %}
+                                <td>
+                                    <div class="card-text mb-2 mt-2" align="center">
+                                        <a href="{% url 'vlads_app:services2_time' service.id day %}" role="button"
+                                                   style="text-decoration: none;"><h5>{{ day }}</h5></a>
+                                    </div>
+                                </td>
+                                {% endif %}
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for day in my_list4 %}
+                            {% if day != 0 %}
+                                {% if day not in total_work_days %}
+                                    <td class="table-active">
+                                        <div class="card-text mb-2 mt-2" align="center">
+                                            <h5>{{ day }}</h5>
+                                        </div>
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        <div class="card-text mb-2 mt-2" align="center">
+                                            <a href="{% url 'vlads_app:services2_time' service.id day %}" role="button"
+                                                       style="text-decoration: none;"><h5>{{ day }}</h5></a>
+                                        </div>
+                                    </td>
+                                {% endif %}
+                            {% else %}
+                            <td></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for day in my_list5 %}
+                            {% if day != 0 %}
+                                {% if day not in total_work_days %}
+                                    <td>
+                                        <div class="card-text mb-2 mt-2" align="center">
+                                            <h5>{{ day }}</h5>
+                                        </div>
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        <div class="card-text mb-2 mt-2" align="center">
+                                            <a href="{% url 'vlads_app:services2_time' service.id day %}" role="button"
+                                                       style="text-decoration: none;"><h5>{{ day }}</h5></a>
+                                        </div>
+                                    </td>
+                                {% endif %}
+                            {% else %}
+                            <td class="table-active"></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+                </div>
+                    </div>
+            </div>
         </div>
     </div>
 </div>
