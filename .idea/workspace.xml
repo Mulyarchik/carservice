@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a5dd9e61-da55-4d1f-b37a-3937953d3550" name="Changes" comment="the ability to add a service">
-      <change afterPath="$PROJECT_DIR$/website/templates/list_of_services.html" afterDir="false" />
+    <list default="true" id="a5dd9e61-da55-4d1f-b37a-3937953d3550" name="Changes" comment="added the ability to write to a specific car service">
+      <change afterPath="$PROJECT_DIR$/website/static_root/css/stylesheet.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/website/templates/day_selection.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/website/templates/view_profile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/backends/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/backends/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/backends/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/backends/test.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/website/backends/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/backends/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/templates/backends.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/backends.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/templates/backends2.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/backends2.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/backends.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/backends2.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/time_selection.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/backends3.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/add_customer.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/templates/services.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/services.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/list_of_services.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/list_of_services.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/services.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/add_service.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/website/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/website/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/website/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/website/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,9 +27,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Python Script" />
         <option value="CSS File" />
         <option value="HTML File" />
-        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -53,8 +57,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\v_mul\PycharmProjects\website_carservice\website\static_root\css" />
+      <recent name="C:\Users\v_mul\PycharmProjects\website_carservice\website\static_root" />
+      <recent name="C:\Users\v_mul\PycharmProjects\website_carservice\website\static" />
+      <recent name="C:\Users\v_mul\PycharmProjects\website_carservice\website\static\static_root\css" />
       <recent name="C:\Users\v_mul\PycharmProjects\website_carservice\website" />
-      <recent name="C:\Users\v_mul\PycharmProjects\website_carservice\website\static\services" />
     </key>
   </component>
   <component name="RunManager" selected="Python.test">
@@ -198,7 +205,10 @@
       <workItem from="1673630068403" duration="14817000" />
       <workItem from="1673697980104" duration="389000" />
       <workItem from="1673702758377" duration="5297000" />
-      <workItem from="1673782862138" duration="3276000" />
+      <workItem from="1673782862138" duration="15125000" />
+      <workItem from="1673876495780" duration="7623000" />
+      <workItem from="1673895414373" duration="6814000" />
+      <workItem from="1673903526700" duration="3289000" />
     </task>
     <task id="LOCAL-00001" summary="create app &quot;backends&quot;">
       <created>1673086621076</created>
@@ -221,7 +231,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673554126339</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="added the ability to write to a specific car service">
+      <created>1673786182594</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1673786182594</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -242,7 +259,8 @@
     <MESSAGE value="create app &quot;backends&quot;" />
     <MESSAGE value="add models: service, date, time, customer. adding an entry for a specific date" />
     <MESSAGE value="the ability to add a service" />
-    <option name="LAST_COMMIT_MESSAGE" value="the ability to add a service" />
+    <MESSAGE value="added the ability to write to a specific car service" />
+    <option name="LAST_COMMIT_MESSAGE" value="added the ability to write to a specific car service" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -256,7 +274,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/website_carservice$test.coverage" NAME="test Coverage Results" MODIFIED="1673705876357" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/website/backends" />
+    <SUITE FILE_PATH="coverage/website_carservice$test.coverage" NAME="test Coverage Results" MODIFIED="1673899464253" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/website/backends" />
     <SUITE FILE_PATH="coverage/website_carservice$dsfsdfsdfs__.coverage" NAME="dsfsdfsdfs__ Coverage Results" MODIFIED="1673632829831" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/website/backends" />
     <SUITE FILE_PATH="coverage/website_carservice$sendgrid.coverage" NAME="sendgrid_test Coverage Results" MODIFIED="1673436648293" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/website/backends" />
     <SUITE FILE_PATH="coverage/website_carservice$test_mail.coverage" NAME="test_mail Coverage Results" MODIFIED="1673447998750" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/website/backends" />

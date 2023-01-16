@@ -1,26 +1,42 @@
 {% extends "base.html" %}
 
 {% block title %}
-Sign in to NickForum
+Services
 {% endblock %}
 
 {% block content %}
 
-<div class="container-sm">
+<div class="container-sm" xmlns="http://www.w3.org/1999/html">
     <div class="card mb-4 mt-4">
         <div class="card-body">
             <div class="card-text mt-3">
-                <h3>Для заказа талона выборите станцию:</h3>
+                <h4>Для заказа талона выберите станцию:</h4>
             </div>
+
             {% for service in services %}
-            <div class="card mb-4 mt-4">
-                <div class="card-body">
-                    <a href="{% url 'vlads_app:services2' service.id %}" role="button" style="text-decoration: none;">
-                        {{ service }}
-                    </a>
+            <a class="card mb-4 mt-4" href="{% url 'vlads_app:day_selection' service.id %}"
+               style="text-decoration: none; color: #1b1b1b">
+                <div class="card-text mb-2 mt-2" style="margin-left:20px;">
+                    <p class="card-text">
+                    <h6>{{ service.name }}</h6>
+                    </p>
+                    <p class="card-text">
+                    <h5><small class="text-muted">{{ service.address }}</small></h5>
+                    </p>
                 </div>
-            </div>
+            </a>
             {% endfor %}
+            <a class="card mb-4 mt-4" href="{% url 'vlads_app:add_service' %}"
+               style="text-decoration: none; color: #1b1b1b">
+                <div class="card-text mb-2 mt-2" style="margin-left:20px;">
+                    <p class="card-text">
+                    <h6>AutoService №***</h6>
+                    </p>
+                    <p class="card-text">
+                    <h5 style="color: #0000EE;">Подключить свой автосервис</h5>
+                    </p>
+                </div>
+            </a>
         </div>
     </div>
 </div>

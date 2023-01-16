@@ -9,12 +9,14 @@ urlpatterns = [
     path('register/', user_signup, name='user_signup'),
     path('login/', user_login, name='user_login'),
     path('logout/', user_logout, name='logout'),
-    path('services/', services, name='services'),
-    path('list_of_services/', list_of_services, name='list_of_services'),
-    path('services2/<int:service_id>/', services2, name='services2'),
-    path('services2/<int:service_id>/day/<int:day_id>/', services2_time, name='services2_time'),
-    path('services2/<int:service_id>/day/<int:day_id>/time/<int:time_id>/add_customer/', profile2, name='profile2'),
-    path('profile/<int:user_id>/', view_profile, name='profile'),
+    path('services/', service_selection, name='service_selection'),
+    path('services/add/', add_service, name='add_service'),
+    path('services/<int:service_id>/', day_selection, name='day_selection'),
+    path('services/<int:service_id>/day/<int:day_id>/', time_selection, name='time_selection'),
+    path('services/<int:service_id>/day/<int:day_id>/time/<int:time_id>/add_customer/', add_customer,
+         name='add_customer'),
+    path('profile/<int:user_id>/', profile, name='profile'),
+    path('profile/<int:user_id>/service/<int:service_id>/check_customers', check_customers, name='check_customers'),
 
 ]
 

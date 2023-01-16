@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}
-NickForum - Forum for coders
+Registration
 {% endblock %}
 
 {% block content %}
@@ -10,7 +10,7 @@ NickForum - Forum for coders
     <form action="." method="POST">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary col-md-4">Create </button>
+        <button type="submit" class="btn btn-primary col-md-4">Create</button>
     </form>
 </div>
 
