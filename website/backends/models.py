@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 
 
-class Day_of_week(models.Model):
+class DayOfWeek(models.Model):
     name = models.CharField(max_length=10, verbose_name='tag')
 
     def __str__(self):
@@ -18,7 +18,7 @@ class Service(models.Model):
     website = models.URLField(max_length=200, verbose_name='URL')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, blank=True)
     email = models.EmailField(verbose_name='Email')
-    working_days = models.ManyToManyField(Day_of_week, blank=True)
+    working_days = models.ManyToManyField(DayOfWeek, blank=True)
     opening_time = models.TimeField(max_length=5, verbose_name='Opening Time')
     closing_time = models.TimeField(max_length=5, verbose_name='Closing Time')
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,12}$',
@@ -35,7 +35,7 @@ class Service(models.Model):
 
 class Date(models.Model):
     day = models.IntegerField(verbose_name='Date')
-    service = models.ForeignKey('Service', on_delete=models.PROTECT, blank=True, null=True)
+    service = models.ForeignKey('Service', on_delete=models.PROTECT, blank=True)
 
     @property
     def date_for_profile(self):
@@ -43,7 +43,7 @@ class Date(models.Model):
             '%A, %d %B'))
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.day)
 
     def get_absolute_url(self):
         return "/date/%i/" % self.pk
@@ -55,9 +55,9 @@ class Date(models.Model):
 
 class Time(models.Model):
     time = models.TimeField(verbose_name='Time')
-    day = models.ForeignKey(Date, on_delete=models.CASCADE, blank=True, null=True)
+    day = models.ForeignKey(Date, on_delete=models.CASCADE, blank=True)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE, blank=True, null=True)
-    service = models.ForeignKey('Service', on_delete=models.PROTECT, blank=True, null=True)
+    service = models.ForeignKey('Service', on_delete=models.PROTECT, blank=True)
 
     def __str__(self) -> str:
         return str(self.time)[:5]

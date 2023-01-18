@@ -10,6 +10,7 @@
         <div class="card-body">
             <div class="card-body">
                 <div class="container">
+
                     <div class="card-body">
                         <h4>{{ service.name }}</h4>
                     </div>
@@ -58,7 +59,7 @@
                         {% if request.user.id == service.owner_id %}
                         <div class="card-text mb-4 mt-4">
                             <h6>Choose the action you would like to take: </h6>
-                            <a href="{% url 'vlads_app:day_delete' service.id day.day %}" role="button"
+                            <a href="{% url 'vlads_app:day_delete' service.id day.id %}" role="button"
                                style="text-decoration: none;">
                                 <button type="button" class="btn btn-danger">Remove a day from work</button>
                             </a>
@@ -66,7 +67,7 @@
                         {% endif %}
                     {% else %}
                     <h6>Choose the action you would like to take: </h6>
-                    <a href="/" role="button"
+                    <a href="{% url 'vlads_app:day_add' service.id day %}" role="button"
                        style="text-decoration: none;">
                         <button type="button" class="btn btn-danger">Add a day as a working day</button>
                     </a>

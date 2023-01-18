@@ -16,7 +16,7 @@ urlpatterns = [
     # path('services/<int:service_id>/delete', day_delete, name='day_delete'),
 
     path('services/<int:service_id>/day/<int:day_id>/', time_selection, name='time_selection'),
-    #path('services/<int:service_id>/day/<int:day_id>/add', day_add, name='day_add'),
+    path('services/<int:service_id>/day/<int:day_id>/add', day_add, name='day_add'),
     path('services/<int:service_id>/day/<int:day_id>/update', day_update, name='day_update'),
     path('services/<int:service_id>/day/<int:day_id>/delete', day_delete, name='day_delete'),
     path('services/<int:service_id>/day/<int:day_id>/time/<int:time_id>/add_customer/', add_customer,

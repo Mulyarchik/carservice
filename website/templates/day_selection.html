@@ -78,11 +78,11 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        {% for days in total_list %}
+                                        {% for days in all_days %}
                                         {% for day in days %}
                                         {% if day != 0 %}
 
-                                            {% if day not in total_work_days %}
+                                            {% if day not in work_days %}
                                                 {% if request.user.id == service.owner_id or request.user.is_staff %}
                                                 <td>
                                                     <div class="card-text mb-2 mt-2" align="center">

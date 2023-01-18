@@ -13,7 +13,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import CustomerForm, UserForm, LoginUserForm, ServiceForm
-from .models import Date, Time, Day_of_week, Service
+from .models import Date, Time, DayOfWeek, Service
 
 remote_days = []
 
@@ -72,19 +72,21 @@ def user_logout(request):
 
 @login_required
 def add_service(request):
-    days = Day_of_week.objects.all()
+    days = DayOfWeek.objects.all()
 
     if request.method == 'POST':
         form = ServiceForm(data=request.POST)
         if form.is_valid():
-            with transaction.atomic():
-                data = form.save(commit=False)
-                data.owner = request.user
-                data.save()
+            data = form.save(commit=False)
+            data.owner = request.user
+            data.save()
+            service = data.id
+            list_of_days = request.POST.getlist('working_days')
+            create_working_days(request, service, list_of_days)
 
-                list_of_days = request.POST.getlist('working_days')
+            with transaction.atomic():
                 for day in list_of_days:
-                    days = Day_of_week.objects.get(pk=day)
+                    days = DayOfWeek.objects.get(pk=day)
                     data.working_days.add(days)
         else:
             messages.error(request, "Вы указали неверные данные!")
@@ -99,6 +101,35 @@ def add_service(request):
     return render(request, 'add_service.html', context=context)
 
 
+def create_working_days(request, service_id, list_of_days):
+    # индексы рабочих дней
+    service_work_days = []
+    for i in list_of_days:
+        service_work_days.append(int(i))
+
+    # все дни месяца
+    total_list = []
+    c = calendar.TextCalendar(calendar.MONDAY)
+    for i in c.itermonthdays(datetime.datetime.today().year, datetime.datetime.today().month):
+        total_list.append(i)
+    total_list = list(filter(lambda num: num != 0, total_list))
+
+    # рабочие дни сервиса
+    total_work_days = []
+    for i in total_list:
+        obj = datetime.datetime(datetime.datetime.today().year, datetime.datetime.today().month, i).isoweekday()
+        if obj not in service_work_days:
+            continue
+        else:
+            total_work_days.append(i)
+
+    with transaction.atomic():
+        for i in total_work_days:
+            Date.objects.create(day=i, service_id=service_id)
+
+    return messages.success(request, "Сalendar with custom for your service successfully created")
+
+
 def service_selection(request):
     services = Service.objects.all()
 
@@ -111,59 +142,53 @@ def service_selection(request):
 
 def day_selection(request, service_id):
     service = Service.objects.get(pk=service_id)
+    day = Date.objects.filter(service_id=service_id).order_by('day')
 
     # HTML calendar
-    total_list = []
-    slice_list = []
+    list1 = []
+    text_calendar = []
     c = calendar.TextCalendar(calendar.MONDAY)
     for i in c.itermonthdays(datetime.datetime.today().year, datetime.datetime.today().month):
-        total_list.append(i)
-    slice_list.append(total_list[:7])
-    slice_list.append(total_list[7:14])
-    slice_list.append(total_list[14:21])
-    slice_list.append(total_list[21:28])
-    slice_list.append(total_list[35:42])
+        list1.append(i)
+    text_calendar.append(list1[:7])
+    text_calendar.append(list1[7:14])
+    text_calendar.append(list1[14:21])
+    text_calendar.append(list1[21:28])
+    text_calendar.append(list1[35:42])
 
     # все дни месяца
-    total_list = list(filter(lambda num: num != 0, total_list))
+    all_days = list(filter(lambda num: num != 0, list1))
 
-    # рабочие дни недели сервиса
-    service_work_days = []
-    for i in service.working_days.all():
-        service_work_days.append(i.id)
+    # Monthly check
+    count_all_days = calendar.monthrange(datetime.datetime.today().year, datetime.datetime.today().month)[1]
+    if len(all_days) != count_all_days:
+        month_update(request, service_id)
 
-    # все рабочие дни сервиса
-    total_work_days = []
-    for i in total_list:
-        if i < datetime.datetime.today().day:
+    work_days = []
+    for work_day in day:
+        if work_day.day < datetime.datetime.today().day:
             continue
-        obj = datetime.datetime(datetime.datetime.today().year, datetime.datetime.today().month, i).isoweekday()
-        if obj not in service_work_days:
-            continue
-        else:
-            total_work_days.append(i)
-
-    for remote_day in remote_days:
-        if remote_day[1] == service.id:
-            try:
-                total_work_days.remove(remote_day[0])
-            except ValueError:
-                print(f'нет обьекта для удаления')
-
-    # Проверка на текущий месяц
-    count_date = Date.objects.filter(service_id=service_id).count()
-    if count_date - len(remote_days) != len(total_work_days):
-        Date.objects.filter(service_id=service_id).delete()
-        for i in total_work_days:
-            Date.objects.create(day=i, service_id=service_id)
+        work_days.append(work_day.day)
 
     context = {
-        'total_list': slice_list,
-        'total_work_days': total_work_days,
+        'all_days': text_calendar,
         'service': service,
+        'work_days': work_days
     }
 
     return render(request, 'day_selection.html', context=context)
+
+
+def month_update(request, service_id):
+    service = Service.objects.get(pk=service_id)
+    Date.objects.filter(service_id=service_id)
+
+    index_work_days = []
+    for i in service.working_days.all():
+        index_work_days.append(i.id)
+
+    create_working_days(request, service_id, index_work_days)
+    return messages.success(request, "Schedule updated!")
 
 
 def time_selection(request, service_id, day_id):
@@ -253,6 +278,15 @@ def profile(request, user_id):
     return render(request, 'view_profile.html', context=context)
 
 
+def day_add(request, service_id, day_id):
+    #service = Service.objects.get(pk=service_id)
+
+    Date.objects.create(day=day_id, service_id=service_id)
+    messages.success(request, "Day successfully added as working day!")
+
+    return day_selection(request, service_id)
+
+
 def day_update(request, service_id, day_id):
     service = Service.objects.get(pk=service_id)
 
@@ -260,28 +294,25 @@ def day_update(request, service_id, day_id):
         messages.error(request, "You do not have permission to perform these actions!")
         return redirect('/')
 
-    try:
-        Date.objects.get(day=day_id, service_id=service_id)
-        day = Date.objects.get(day=day_id, service_id=service_id)
+    if Date.objects.filter(day=day_id, service_id=service_id):
+        day = Date.objects.get(day=day_id, service_id=service_id).order_by('-day')
+        print(day)
         time = Time.objects.select_related('customer').filter(day_id=day.id).order_by('id')
         context = {
             'service': service,
-            'days': day,
+            'day': day,
             'times': time, }
 
-    except ObjectDoesNotExist:
+    else:
         context = {
             'service': service,
+            'day': day_id,
             'times': []}
 
     return render(request, 'time_selection.html', context=context)
 
 
 def day_delete(request, service_id, day_id):
-    global remote_days
-    my_list = [day_id, service_id]
-    remote_days.append(my_list)
-
     service = Service.objects.get(pk=service_id)
 
     if not request.user.is_authenticated and request.user.id != service.owner:
@@ -289,7 +320,7 @@ def day_delete(request, service_id, day_id):
         return redirect('/')
 
     try:
-        Date.objects.get(day=day_id, service_id=service_id).delete()
+        Date.objects.get(pk=day_id).delete()
         messages.success(request, "Day successfully marked as inactive!")
     except ObjectDoesNotExist:
         messages.error(request, "An error has occurred. Try again or contact administrator!")
