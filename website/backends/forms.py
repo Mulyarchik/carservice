@@ -173,7 +173,6 @@ class CustomerForm(forms.ModelForm):
 
     phone_number = forms.RegexField(
         label=("Phone number"),
-        # regex=r'^\+?1?\d{9,15}$')
         widget=forms.TextInput(attrs={'class': 'form-control',
                                       'type': 'text',
                                       'required': 'true',

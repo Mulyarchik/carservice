@@ -9,63 +9,113 @@
 <div class="container-xl">
     <div class="card-text mb-4 mt-4">
         <div class="card-body">
+            <div class="card-body">
+                <div class="container">
+                    <div class="card-body">
+                        <h4>{{ service.name }}</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <div class="card-body">
+                                {{ service.address }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="card-body">
+                                <strong>Schedule:</strong>
+                            </div>
+                            <div class="card-body">
+                                {% for work_day in service.working_days.all %}
+                                <strong>{{ work_day }}</strong>
+                                {% endfor %}
+                                : {{ service.opening_time }} - {{ service.closing_time }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="card-body">
+                                <strong>Contact details:</strong>
+                            </div>
+                            <div class="card-body">
+                                {{ service.phone_number }}
+                            </div>
+                            <div class="card-body">
+                                {{ service.email }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="container px-5">
                 <div class="container px-5">
                     <div class="container px-5">
-                        <div class="row">
-                            <table class="table table-bordered border-primary">
-                                <thead>
-                                <tr>
-                                    <th scope="col">
-                                        <div align="center">&ensp;Mon &ensp;</div>
-                                    </th>
-                                    <th scope="col">
-                                        <div align="center">&ensp;Tue &ensp;</div>
-                                    </th>
-                                    <th scope="col">
-                                        <div align="center">&ensp;Wed &ensp;</div>
-                                    </th>
-                                    <th scope="col">
-                                        <div align="center">&ensp;Thu &ensp;</div>
-                                    </th>
-                                    <th scope="col">
-                                        <div align="center">&ensp;Fri &ensp;</div>
-                                    </th>
-                                    <th scope="col">
-                                        <div align="center">&ensp;Sat &ensp;</div>
-                                    </th>
-                                    <th scope="col">
-                                        <div align="center">&ensp;Sun &ensp;</div>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    {% for list_work_days in total_list %}
-                                        {% for day in list_work_days %}
-                                            {% if day != 0 %}
-                                                {% if day not in total_work_days %}
+                        <div class="card-text mb-4 mt-4">
+                            <div class="row">
+                                <table class="table table-bordered border-primary">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <div align="center">&ensp;Mon &ensp;</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div align="center">&ensp;Tue &ensp;</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div align="center">&ensp;Wed &ensp;</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div align="center">&ensp;Thu &ensp;</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div align="center">&ensp;Fri &ensp;</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div align="center">&ensp;Sat &ensp;</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div align="center">&ensp;Sun &ensp;</div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        {% for days in total_list %}
+                                        {% for day in days %}
+                                        {% if day != 0 %}
+
+                                            {% if day not in total_work_days %}
+                                                {% if request.user.id == service.owner_id or request.user.is_staff %}
+                                                <td>
+                                                    <div class="card-text mb-2 mt-2" align="center">
+                                                        <a href="{% url 'vlads_app:day_update' service.id day %}"
+                                                           role="button"
+                                                           style="text-decoration: none;"><h5>{{ day }}</h5></a>
+                                                    </div>
+                                                </td>
+                                                {% else %}
                                                 <td class="table-active">
                                                     <div class="card-text mb-2 mt-2" align="center">
                                                         <h5>{{ day }}</h5>
                                                     </div>
                                                 </td>
-                                                {% else %}
+                                                {% endif %}
+                                            {% else %}
                                                 <td>
                                                     <div class="card-text mb-2 mt-2" align="center">
-                                                        <a href="{% url 'vlads_app:time_selection' service.id day %}" role="button"
+                                                        <a href="{% url 'vlads_app:time_selection' service.id day %}"
+                                                           role="button"
                                                            style="text-decoration: none;"><h5>{{ day }}</h5></a>
                                                     </div>
                                                 </td>
-                                                {% endif %}
-                                            {% else %}
-                                            <td class="table-active"></td>
                                             {% endif %}
+                                        {% else %}
+                                        <td class="table-active"></td>
+                                        {% endif %}
                                         {% endfor %}
-                                </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

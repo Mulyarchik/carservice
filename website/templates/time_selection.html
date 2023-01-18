@@ -6,15 +6,77 @@
 {% block content %}
 
 <div class="container-xl" xmlns="http://www.w3.org/1999/html">
-    <h1>Day 1</h1>
+    <div class="card-text mb-4 mt-4">
+        <div class="card-body">
+            <div class="card-body">
+                <div class="container">
+                    <div class="card-body">
+                        <h4>{{ service.name }}</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <div class="card-body">
+                                {{ service.address }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="card-body">
+                                <strong>Schedule:</strong>
+                            </div>
+                            <div class="card-body">
+                                {% for work_day in service.working_days.all %}
+                                <strong>{{ work_day }}</strong>
+                                {% endfor %}
+                                : {{ service.opening_time }} - {{ service.closing_time }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="card-body">
+                                <strong>Contact details:</strong>
+                            </div>
+                            <div class="card-body">
+                                {{ service.phone_number }}
+                            </div>
+                            <div class="card-body">
+                                {{ service.email }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    {% for time in times %}
-        {% if not time.customer_id %}
-            <a href="{% url 'vlads_app:add_customer' service.id day.id time.id %}" role="button" style="text-decoration: none;">
-                <button type="button" class="btn btn-secondary">{{ time.time|date:"H:i" }}</button>
-            </a>
-        {% endif %}
-    {% endfor %}
+                <div class="card-text mb-4 mt-4">
+                    {% if times %}
+                        <h6>Choose a convenient time for you: </h6>
+                        {% for time in times %}
+                        {% if not time.customer_id %}
+                        <a href="{% url 'vlads_app:add_customer' service.id day.id time.id %}" role="button"
+                           style="text-decoration: none;">
+                            <button type="button" class="btn btn-secondary">{{ time.time|date:"H:i" }}</button>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                        {% if request.user.id == service.owner_id %}
+                        <div class="card-text mb-4 mt-4">
+                            <h6>Choose the action you would like to take: </h6>
+                            <a href="{% url 'vlads_app:day_delete' service.id day.day %}" role="button"
+                               style="text-decoration: none;">
+                                <button type="button" class="btn btn-danger">Remove a day from work</button>
+                            </a>
+                        </div>
+                        {% endif %}
+                    {% else %}
+                    <h6>Choose the action you would like to take: </h6>
+                    <a href="/" role="button"
+                       style="text-decoration: none;">
+                        <button type="button" class="btn btn-danger">Add a day as a working day</button>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
 {% endblock %}
+

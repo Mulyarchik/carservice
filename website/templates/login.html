@@ -1,20 +1,23 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Sign in to NickForum
+Sign in to NickForum
 {% endblock %}
 
 {% block content %}
 
-    <div class="container-sm">
-        <div class="card mb-4 mt-4">
-            <div class="card-body">
-                <form action="." method="POST">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary col-md-4">Login</button>
-                </form>
+<div class="container-sm">
+    <div class="card mb-4 mt-4">
+        <div class="card-body">
+            <form action="." method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary col-md-4">Login</button>
+            </form>
+            <div class="card-text mt-4">
+                Don't have an account? <a href="/register/" style="text-decoration: none;">Create it</a>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

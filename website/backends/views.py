@@ -5,6 +5,8 @@ import datetime
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail, BadHeaderError
 from django.db import transaction
 from django.http import HttpResponse
@@ -12,6 +14,8 @@ from django.shortcuts import render, redirect
 
 from .forms import CustomerForm, UserForm, LoginUserForm, ServiceForm
 from .models import Date, Time, Day_of_week, Service
+
+remote_days = []
 
 
 def home(request):
@@ -66,6 +70,7 @@ def user_logout(request):
     return redirect('/')
 
 
+@login_required
 def add_service(request):
     days = Day_of_week.objects.all()
 
@@ -130,15 +135,24 @@ def day_selection(request, service_id):
     # все рабочие дни сервиса
     total_work_days = []
     for i in total_list:
+        if i < datetime.datetime.today().day:
+            continue
         obj = datetime.datetime(datetime.datetime.today().year, datetime.datetime.today().month, i).isoweekday()
         if obj not in service_work_days:
             continue
         else:
             total_work_days.append(i)
 
+    for remote_day in remote_days:
+        if remote_day[1] == service.id:
+            try:
+                total_work_days.remove(remote_day[0])
+            except ValueError:
+                print(f'нет обьекта для удаления')
+
     # Проверка на текущий месяц
     count_date = Date.objects.filter(service_id=service_id).count()
-    if count_date != len(total_work_days):
+    if count_date - len(remote_days) != len(total_work_days):
         Date.objects.filter(service_id=service_id).delete()
         for i in total_work_days:
             Date.objects.create(day=i, service_id=service_id)
@@ -147,7 +161,6 @@ def day_selection(request, service_id):
         'total_list': slice_list,
         'total_work_days': total_work_days,
         'service': service,
-
     }
 
     return render(request, 'day_selection.html', context=context)
@@ -221,14 +234,15 @@ def add_customer(request, service_id, day_id, time_id):
     return render(request, 'add_customer.html', context=context)
 
 
+# views for profile
 def profile(request, user_id):
     service = Service.objects.get(owner_id=user_id)
     days = Date.objects.filter(service_id=service.id)
     times = Time.objects.filter(service_id=service.id)
 
     if not request.user.is_authenticated:
-        messages.error(request, "You must be logged in to view your profile!")
-        return redirect('/login')
+        messages.error(request, "You do not have permission to view your profile!")
+        return redirect('/')
 
     context = {
         'service': service,
@@ -236,17 +250,48 @@ def profile(request, user_id):
         'times': times
     }
 
-
     return render(request, 'view_profile.html', context=context)
 
-def check_customers(request, user_id, service_id):
-    service = Service.objects.get(owner_id=user_id)
-    days = Date.objects.filter(service_id=service.id)
 
-    if not request.user.is_authenticated:
-        messages.error(request, "You must be logged in to view your profile!")
-        return redirect('/login')
+def day_update(request, service_id, day_id):
+    service = Service.objects.get(pk=service_id)
+
+    if not request.user.is_authenticated and request.user.id != service.owner:
+        messages.error(request, "You do not have permission to perform these actions!")
+        return redirect('/')
+
+    try:
+        Date.objects.get(day=day_id, service_id=service_id)
+        day = Date.objects.get(day=day_id, service_id=service_id)
+        time = Time.objects.select_related('customer').filter(day_id=day.id).order_by('id')
+        context = {
+            'service': service,
+            'days': day,
+            'times': time, }
+
+    except ObjectDoesNotExist:
+        context = {
+            'service': service,
+            'times': []}
+
+    return render(request, 'time_selection.html', context=context)
 
 
+def day_delete(request, service_id, day_id):
+    global remote_days
+    my_list = [day_id, service_id]
+    remote_days.append(my_list)
 
-    return render(request, 'view_profile.html', locals())
+    service = Service.objects.get(pk=service_id)
+
+    if not request.user.is_authenticated and request.user.id != service.owner:
+        messages.error(request, "You do not have permission to perform these actions!")
+        return redirect('/')
+
+    try:
+        Date.objects.get(day=day_id, service_id=service_id).delete()
+        messages.success(request, "Day successfully marked as inactive!")
+    except ObjectDoesNotExist:
+        messages.error(request, "An error has occurred. Try again or contact administrator!")
+
+    return day_selection(request, service_id)

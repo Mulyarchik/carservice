@@ -9,7 +9,7 @@ class Day_of_week(models.Model):
     name = models.CharField(max_length=10, verbose_name='tag')
 
     def __str__(self):
-        return str(self.id)
+        return str(self.name)[:3]
 
 
 class Service(models.Model):
@@ -41,11 +41,12 @@ class Date(models.Model):
     def date_for_profile(self):
         return str(datetime.date(datetime.datetime.today().year, datetime.datetime.today().month, self.day).strftime(
             '%A, %d %B'))
+
     def __str__(self):
-        return str(self.id)
+        return str(self.pk)
 
     def get_absolute_url(self):
-        return "/date/%i/" % self.id
+        return "/date/%i/" % self.pk
 
     class Meta:
         verbose_name = 'Date'
@@ -57,8 +58,6 @@ class Time(models.Model):
     day = models.ForeignKey(Date, on_delete=models.CASCADE, blank=True, null=True)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE, blank=True, null=True)
     service = models.ForeignKey('Service', on_delete=models.PROTECT, blank=True, null=True)
-
-
 
     def __str__(self) -> str:
         return str(self.time)[:5]
@@ -79,4 +78,4 @@ class Customer(models.Model):
     email = models.EmailField(verbose_name='Email')
 
     def __str__(self) -> str:
-        return f'customer{self.id}'
+        return f'customer{self.pk}'

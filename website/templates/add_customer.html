@@ -6,12 +6,14 @@ Registration
 {% block content %}
 
 <div class="container-xl" xmlns="http://www.w3.org/1999/html">
-    <h1>Day 1</h1>
-    <form action="." method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary col-md-4">Create</button>
-    </form>
+    <div class="card-text mb-4 mt-4">
+        <h4>To leave a request you need to provide your contact information: </h4>
+        <form action="." method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary col-md-4">Create</button>
+        </form>
+    </div>
 </div>
 
 {% endblock %}
