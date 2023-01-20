@@ -139,7 +139,9 @@ class ServiceForm(forms.ModelForm):
 
     class Meta:
         model = Service
-        fields = ('name', 'address', 'website', 'email', 'working_days', 'opening_time', 'closing_time', 'phone_number')
+        fields = (
+        'name', 'address', 'website', 'email', 'working_days', 'opening_time', 'closing_time',
+        'phone_number')
 
 
 class CustomerForm(forms.ModelForm):

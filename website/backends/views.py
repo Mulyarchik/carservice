@@ -2,6 +2,7 @@ import calendar
 import datetime
 
 # from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
+import pandas as pd
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, logout
@@ -13,7 +14,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import CustomerForm, UserForm, LoginUserForm, ServiceForm
-from .models import Date, Time, DayOfWeek, Service
+from .models import Date, Time, DayOfWeek, Service, RecordingTime
 
 remote_days = []
 
@@ -71,7 +72,13 @@ def user_logout(request):
 
 
 @login_required
-def add_service(request):
+def add_service(request, self=None):
+    recording_time = RecordingTime.objects.all()
+
+    if not request.user.is_authenticated:
+        messages.error(request, "To connect the service you must be authorized!")
+        return redirect('login/')
+
     days = DayOfWeek.objects.all()
 
     if request.method == 'POST':
@@ -80,6 +87,10 @@ def add_service(request):
             data = form.save(commit=False)
             data.owner = request.user
             data.save()
+
+            data.recording_time.add(request.POST['recording_time'])
+            data.save()
+
             service = data.id
             list_of_days = request.POST.getlist('working_days')
             create_working_days(request, service, list_of_days)
@@ -88,6 +99,7 @@ def add_service(request):
                 for day in list_of_days:
                     days = DayOfWeek.objects.get(pk=day)
                     data.working_days.add(days)
+                data.save()
         else:
             messages.error(request, "Вы указали неверные данные!")
         return redirect('/')
@@ -97,6 +109,7 @@ def add_service(request):
     context = {
         'form': form,
         'days': days,
+        'recording_times': recording_time,
     }
     return render(request, 'add_service.html', context=context)
 
@@ -137,6 +150,7 @@ def service_selection(request):
         'services': services,
 
     }
+
     return render(request, 'list_of_services.html', context=context)
 
 
@@ -154,6 +168,7 @@ def day_selection(request, service_id):
     text_calendar.append(list1[7:14])
     text_calendar.append(list1[14:21])
     text_calendar.append(list1[21:28])
+    text_calendar.append(list1[28:35])
     text_calendar.append(list1[35:42])
 
     # все дни месяца
@@ -192,21 +207,25 @@ def month_update(request, service_id):
 
 
 def time_selection(request, service_id, day_id):
-    service = Service.objects.get(pk=service_id)
+    service = Service.recording_time.through.objects.get(service_id=service_id)
     day = Date.objects.get(day=day_id, service_id=service_id)
     time = Time.objects.select_related('customer').filter(day_id=day.id).order_by('id')
+    recording_time = RecordingTime.objects.get(service=service_id)
 
     if not Time.objects.filter(day_id=day.id):
-        for item in range(int(str(service.opening_time).split(':00:00')[0]),
-                          int(str(service.closing_time).split(':00:00')[0]) + 1):
-            item = str(item)
-            item += ':00'
-            Time.objects.create(time=item, day_id=day.id, service_id=service_id)
+        if str(recording_time) == '00:30':
+            freq = '0.5H'
+        elif str(recording_time) == '01:00':
+            freq = '1H'
+        time_list = pd.timedelta_range(start=str(service.opening_time), end=str(service.closing_time),
+                                       freq=freq).tolist()
+        for i in time_list:
+            Time.objects.create(time=str(i)[7:12], day_id=day.id, service_id=service_id)
 
     context = {
         'service': service,
         'times': time,
-        'day': day
+        'day': day,
     }
 
     return render(request, 'time_selection.html', context=context)
@@ -215,6 +234,7 @@ def time_selection(request, service_id, day_id):
 def add_customer(request, service_id, day_id, time_id):
     service = Service.objects.get(pk=service_id)
     day = Date.objects.get(pk=day_id)
+
     if request.method == 'POST':
         form = CustomerForm(request.POST)
         if form.is_valid():
@@ -253,7 +273,7 @@ def add_customer(request, service_id, day_id, time_id):
         form = CustomerForm()
 
     context = {
-        'form': form
+        'form': form,
     }
 
     return render(request, 'add_customer.html', context=context)
@@ -279,12 +299,12 @@ def profile(request, user_id):
 
 
 def day_add(request, service_id, day_id):
-    #service = Service.objects.get(pk=service_id)
+    service = Service.objects.get(pk=service_id)
 
     Date.objects.create(day=day_id, service_id=service_id)
     messages.success(request, "Day successfully added as working day!")
 
-    return day_selection(request, service_id)
+    return redirect(service.get_absolute_url())
 
 
 def day_update(request, service_id, day_id):
@@ -294,9 +314,12 @@ def day_update(request, service_id, day_id):
         messages.error(request, "You do not have permission to perform these actions!")
         return redirect('/')
 
+    if day_id < datetime.datetime.today().day:
+        messages.error(request, "This day cannot be active!")
+        return redirect(service.get_absolute_url())
+
     if Date.objects.filter(day=day_id, service_id=service_id):
-        day = Date.objects.get(day=day_id, service_id=service_id).order_by('-day')
-        print(day)
+        day = Date.objects.get(day=day_id, service_id=service_id)
         time = Time.objects.select_related('customer').filter(day_id=day.id).order_by('id')
         context = {
             'service': service,
@@ -325,4 +348,4 @@ def day_delete(request, service_id, day_id):
     except ObjectDoesNotExist:
         messages.error(request, "An error has occurred. Try again or contact administrator!")
 
-    return day_selection(request, service_id)
+    return redirect(service.get_absolute_url())

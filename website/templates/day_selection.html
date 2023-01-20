@@ -84,7 +84,7 @@
 
                                             {% if day not in work_days %}
                                                 {% if request.user.id == service.owner_id or request.user.is_staff %}
-                                                <td>
+                                                <td class="table-active">
                                                     <div class="card-text mb-2 mt-2" align="center">
                                                         <a href="{% url 'vlads_app:day_update' service.id day %}"
                                                            role="button"

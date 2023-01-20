@@ -12,6 +12,13 @@ class DayOfWeek(models.Model):
         return str(self.name)[:3]
 
 
+class RecordingTime(models.Model):
+    time = models.TimeField(verbose_name='Recording Time')
+
+    def __str__(self):
+        return str(self.time)[:5]
+
+
 class Service(models.Model):
     name = models.CharField(max_length=50, verbose_name='Name')
     address = models.CharField(max_length=50, verbose_name='Address')
@@ -19,11 +26,15 @@ class Service(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, blank=True)
     email = models.EmailField(verbose_name='Email')
     working_days = models.ManyToManyField(DayOfWeek, blank=True)
+    recording_time = models.ManyToManyField(RecordingTime, blank=True)
     opening_time = models.TimeField(max_length=5, verbose_name='Opening Time')
     closing_time = models.TimeField(max_length=5, verbose_name='Closing Time')
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,12}$',
                                  message="Phone number must be entered in the format: '+375(29)12-12-123'. Up to 12 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=13, blank=True)
+
+    def get_absolute_url(self):
+        return "/service/%i/" % self.pk
 
     def __str__(self):
         return self.name

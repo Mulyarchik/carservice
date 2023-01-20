@@ -54,7 +54,7 @@
                         <ul class="dropdown-menu dropdown-menu-lg-end">
                             <li><a class="btn btn-link" href="{% url 'vlads_app:profile' user.id %}" role="button"
                                    style="text-decoration: none;">Профиль</a></li>
-                            <li><a class="btn btn-link" href="/logout" role="button" style="text-decoration: none;">Выйти</a>
+                            <li><a class="btn btn-link" href="/accounts/logout/" role="button" style="text-decoration: none;">Выйти</a>
                             </li>
                         </ul>
                     </div>
@@ -63,7 +63,7 @@
             {% else %}
             <div class="d-flex" id="not_loginned">
                 <ul class="me-auto mb-lg-0">
-                    <a class="btn btn-link" href="/login" role="button" style="text-decoration: none;">Sign In</a>
+                    <a class="btn btn-link" href="/accounts/login/" role="button" style="text-decoration: none;">Sign In</a>
                 </ul>
             </div>
             {% endif %}

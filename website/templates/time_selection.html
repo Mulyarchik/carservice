@@ -45,26 +45,28 @@
                     </div>
                 </div>
 
+                <p class="card-text mb-4 mt-4">
+
                 <div class="card-text mb-4 mt-4">
                     {% if times %}
-                        <h6>Choose a convenient time for you: </h6>
-                        {% for time in times %}
-                        {% if not time.customer_id %}
-                        <a href="{% url 'vlads_app:add_customer' service.id day.id time.id %}" role="button"
+                    <h6>Choose a convenient time for you: </h6>
+                    {% for time in times %}
+                    {% if not time.customer_id %}
+                    <a href="{% url 'vlads_app:add_customer' service.id day.id time.id %}" role="button"
+                       style="text-decoration: none;">
+                        <button type="button" class="btn btn-secondary">{{ time.time|date:"H:i" }}</button>
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                    {% if request.user.id == service.owner_id %}
+                    <div class="card-text mb-4 mt-4">
+                        <h6>Choose the action you would like to take: </h6>
+                        <a href="{% url 'vlads_app:day_delete' service.id day.id %}" role="button"
                            style="text-decoration: none;">
-                            <button type="button" class="btn btn-secondary">{{ time.time|date:"H:i" }}</button>
+                            <button type="button" class="btn btn-danger">Remove a day from work</button>
                         </a>
-                        {% endif %}
-                        {% endfor %}
-                        {% if request.user.id == service.owner_id %}
-                        <div class="card-text mb-4 mt-4">
-                            <h6>Choose the action you would like to take: </h6>
-                            <a href="{% url 'vlads_app:day_delete' service.id day.id %}" role="button"
-                               style="text-decoration: none;">
-                                <button type="button" class="btn btn-danger">Remove a day from work</button>
-                            </a>
-                        </div>
-                        {% endif %}
+                    </div>
+                    {% endif %}
                     {% else %}
                     <h6>Choose the action you would like to take: </h6>
                     <a href="{% url 'vlads_app:day_add' service.id day %}" role="button"
@@ -76,6 +78,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 </div>
 
