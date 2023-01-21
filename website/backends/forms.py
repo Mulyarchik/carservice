@@ -140,8 +140,8 @@ class ServiceForm(forms.ModelForm):
     class Meta:
         model = Service
         fields = (
-        'name', 'address', 'website', 'email', 'working_days', 'opening_time', 'closing_time',
-        'phone_number')
+            'name', 'address', 'website', 'email', 'working_days', 'opening_time', 'closing_time',
+            'phone_number')
 
 
 class CustomerForm(forms.ModelForm):
@@ -191,3 +191,17 @@ class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
         fields = ('surname', 'name', 'patronymic', 'car', 'phone_number', 'email')
+
+
+class CreateDay(forms.Form):
+    recording_time = forms.TimeField(input_formats=['%H:%M'],
+                                     label=("Opening Time"),
+                                     widget=forms.TimeInput(attrs={'class': 'form-control', }))
+
+    opening_time = forms.TimeField(input_formats=['%H:%M'],
+                                   label=("Opening Time"),
+                                   widget=forms.TimeInput(attrs={'class': 'form-control', }))
+
+    closing_time = forms.TimeField(input_formats=['%H:%M'],
+                                   label=("Closing Time"),
+                                   widget=forms.TimeInput(attrs={'class': 'form-control', }))

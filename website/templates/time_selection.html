@@ -10,7 +10,6 @@
         <div class="card-body">
             <div class="card-body">
                 <div class="container">
-
                     <div class="card-body">
                         <h4>{{ service.name }}</h4>
                     </div>
@@ -51,12 +50,12 @@
                     {% if times %}
                     <h6>Choose a convenient time for you: </h6>
                     {% for time in times %}
-                    {% if not time.customer_id %}
-                    <a href="{% url 'vlads_app:add_customer' service.id day.id time.id %}" role="button"
-                       style="text-decoration: none;">
-                        <button type="button" class="btn btn-secondary">{{ time.time|date:"H:i" }}</button>
-                    </a>
-                    {% endif %}
+                    <div class="d-inline-block p-2 m-2 ">
+                        <a href="{% url 'vlads_app:add_customer' service.id day.id time.id %}" role="button"
+                           style="text-decoration: none;">
+                            <button type="button" class="btn btn-secondary">{{ time.time|date:"H:i" }}</button>
+                        </a>
+                    </div>
                     {% endfor %}
                     {% if request.user.id == service.owner_id %}
                     <div class="card-text mb-4 mt-4">
@@ -69,18 +68,63 @@
                     {% endif %}
                     {% else %}
                     <h6>Choose the action you would like to take: </h6>
-                    <a href="{% url 'vlads_app:day_add' service.id day %}" role="button"
-                       style="text-decoration: none;">
-                        <button type="button" class="btn btn-danger">Add a day as a working day</button>
-                    </a>
+                    <form action="{% url 'vlads_app:day_update' service.id day %}" method="POST">
+                        {% csrf_token %}
+                        <div class="card-text mb-2 mt-2">
+                            <label for="id_recording_time">Recording time:</label>
+                            <select class="js-recording_time form-control" name="recording_time"
+                                    id="id_recording_time">
+                                {% for recording_time in recording_times %}
+                                <option value="{{ recording_time }}">{{ recording_time }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="card-text mb-2 mt-2">
+                            <label for="id_opening_time">Opening time:</label>
+                            <input type="text" class="form-control" id="id_opening_time" name="opening_time"
+                                   placeholder="janem">
+                        </div>
+                        <div class="card-text mb-2 mt-2">
+                            <label for="id_closing_time">Closing time:</label>
+                            <input type="text" class="form-control" id="id_closing_time" name="closing_time"
+                                   placeholder="janem">
+                        </div>
+                        <button type="submit" class="btn btn-danger">Add a day as a working day</button>
+
+                    </form>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
-</div>
+<script>
+    $(function () {
+        $("#id_opening_time").timepicker({
+            timeFormat: 'HH:mm',
+            ampm: false,
+            interval: 60,
+            minTime: '5',
+            maxTime: '11:00pm',
+            defaultTime: '8',
+            startTime: '05:00',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true
+        });
+        $("#id_closing_time").timepicker({
+            timeFormat: 'HH:mm',
+            ampm: false,
+            interval: 60,
+            minTime: '5',
+            maxTime: '11:00pm',
+            defaultTime: '20',
+            startTime: '05:00',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true
+        });
+    });
+</script>
 
 {% endblock %}
-

@@ -18,3 +18,6 @@ for i in datelist:
     list1.append(str(i)[7:12])
     list1.append(1)
 print(my_list)
+
+my_list = [i for i in range(1,30)]
+print([i for i in range(1,30)])

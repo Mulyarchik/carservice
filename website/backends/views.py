@@ -1,7 +1,6 @@
 import calendar
 import datetime
 
-# from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
 import pandas as pd
 from django.conf import settings
 from django.contrib import messages
@@ -13,10 +12,8 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .forms import CustomerForm, UserForm, LoginUserForm, ServiceForm
+from .forms import CustomerForm, UserForm, LoginUserForm, ServiceForm, CreateDay
 from .models import Date, Time, DayOfWeek, Service, RecordingTime
-
-remote_days = []
 
 
 def home(request):
@@ -207,12 +204,12 @@ def month_update(request, service_id):
 
 
 def time_selection(request, service_id, day_id):
-    service = Service.recording_time.through.objects.get(service_id=service_id)
+    service = Service.objects.get(pk=service_id)
     day = Date.objects.get(day=day_id, service_id=service_id)
-    time = Time.objects.select_related('customer').filter(day_id=day.id).order_by('id')
+    time = Time.objects.select_related('customer').filter(day_id=day.id, customer_id__isnull=True).order_by('id')
     recording_time = RecordingTime.objects.get(service=service_id)
 
-    if not Time.objects.filter(day_id=day.id):
+    if not time.exists():
         if str(recording_time) == '00:30':
             freq = '0.5H'
         elif str(recording_time) == '01:00':
@@ -226,6 +223,7 @@ def time_selection(request, service_id, day_id):
         'service': service,
         'times': time,
         'day': day,
+        # 'recording_times': recording_time
     }
 
     return render(request, 'time_selection.html', context=context)
@@ -283,7 +281,8 @@ def add_customer(request, service_id, day_id, time_id):
 def profile(request, user_id):
     service = Service.objects.get(owner_id=user_id)
     days = Date.objects.filter(service_id=service.id)
-    times = Time.objects.filter(service_id=service.id)
+    times = Time.objects.filter(service_id=service.id,
+                                day__in=[i for i in range(datetime.datetime.today().day, 32)]).order_by('day_id')
 
     if not request.user.is_authenticated:
         messages.error(request, "You do not have permission to view your profile!")
@@ -309,6 +308,7 @@ def day_add(request, service_id, day_id):
 
 def day_update(request, service_id, day_id):
     service = Service.objects.get(pk=service_id)
+    recording_time = RecordingTime.objects.all()
 
     if not request.user.is_authenticated and request.user.id != service.owner:
         messages.error(request, "You do not have permission to perform these actions!")
@@ -318,19 +318,34 @@ def day_update(request, service_id, day_id):
         messages.error(request, "This day cannot be active!")
         return redirect(service.get_absolute_url())
 
-    if Date.objects.filter(day=day_id, service_id=service_id):
-        day = Date.objects.get(day=day_id, service_id=service_id)
-        time = Time.objects.select_related('customer').filter(day_id=day.id).order_by('id')
-        context = {
-            'service': service,
-            'day': day,
-            'times': time, }
-
+    if request.method == 'POST':
+        form = CreateDay(request.POST)
+        if form.is_valid():
+            day = Date.objects.create(day=day_id, service_id=service_id)
+            recording_time = request.POST['recording_time']
+            opening_time = request.POST['opening_time'] + ':00'
+            closing_time = request.POST['closing_time'] + ':00'
+            if recording_time == '00:30':
+                freq = '0.5H'
+            elif recording_time == '01:00':
+                freq = '1H'
+            time_list = pd.timedelta_range(start=opening_time, end=closing_time, freq=freq).tolist()
+            for i in time_list:
+                Time.objects.create(time=str(i)[7:12], day_id=day.id, service_id=service_id)
+            messages.success(request, "Day successfully added as working day!")
+            return redirect(service.get_absolute_url())
+        else:
+            messages.error(request, "Шncorrect data entered!")
+            return redirect(service.get_absolute_url())
     else:
-        context = {
-            'service': service,
-            'day': day_id,
-            'times': []}
+        form = CreateDay()
+
+    context = {
+        'form': form,
+        'service': service,
+        'day': day_id,
+        'times': [],
+        'recording_times': recording_time}
 
     return render(request, 'time_selection.html', context=context)
 
