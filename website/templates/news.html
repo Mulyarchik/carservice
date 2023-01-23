@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+Sign in to NickForum
+{% endblock %}
+
+{% block content %}
+
+<div class="container-xl" id="articles-container">
+    <div class="card-text mb-4 mt-4">
+        {% for value in data %}
+        <div class="card mb-3 box" style="max-width: 640px; margin-left:150px;">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{{value.url}}" target="_blanck">{{ value.title }}</a></h5>
+                        <p class="card-text">{{ value.description }}</p>
+                        <p class="card-text"><small class="text-muted">{{ value.publishedat }}</small></p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 img-box">
+                    <img src="{{ value.image }}" class="card-img" alt="..." height="100%">
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<h1 id="loading">Loading....</h1>
+
+
+<style>
+    #articles-container {
+        margin-left: 200px;
+    }
+
+
+    .img-box {
+        padding: 20px;
+    }
+
+    .img-box img {
+        border-radius: 15px;
+        object-fit: cover;
+    }
+
+    #loading {
+        text-align: center;
+        display: none;
+    }
+</style>
+{% endblock %}

@@ -110,7 +110,6 @@ INTERNAL_IPS = [
 # EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_PORT
 
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 

@@ -2,10 +2,11 @@ import calendar
 import datetime
 
 import pandas as pd
+import requests
+from dateutil import parser
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail, BadHeaderError
 from django.db import transaction
@@ -18,6 +19,45 @@ from .models import Date, Time, DayOfWeek, Service, RecordingTime
 
 def home(request):
     return render(request, 'home.html', locals())
+
+
+def news(request, temp_img=None):
+    url = 'https://newsapi.org/v2/everything'
+    headers = {
+        'X-Api-Key': settings.APIKEY_NEWSAPI
+    }
+
+    params = {
+        'q': 'car',
+        'from': datetime.date.today(),
+        'pageSize': 20
+    }
+
+    r = requests.get(url=url, params=params, headers=headers)
+
+    data = r.json()
+    if data["status"] != "ok":
+        return HttpResponse("<h1>Request Failed</h1>")
+    data = data["articles"]
+
+    context = {
+        "success": True,
+        "data": [],
+    }
+
+    for i in data:
+        time_str = parser.isoparse(i["publishedAt"])
+        i["publishedAt"] = time_str.strftime('%A, %d %B %H:%M:%S')
+
+        context["data"].append({
+            "title": i["title"],
+            "description": "" if i["description"] is None else i["description"],
+            "url": i["url"],
+            "image": temp_img if i["urlToImage"] is None else i["urlToImage"],
+            "publishedat": i["publishedAt"]
+        })
+
+    return render(request, 'news.html', context=context)
 
 
 def user_signup(request):
@@ -68,13 +108,12 @@ def user_logout(request):
     return redirect('/')
 
 
-@login_required
 def add_service(request, self=None):
     recording_time = RecordingTime.objects.all()
 
     if not request.user.is_authenticated:
         messages.error(request, "To connect the service you must be authorized!")
-        return redirect('login/')
+        return redirect('/accounts/login/')
 
     days = DayOfWeek.objects.all()
 
@@ -280,9 +319,9 @@ def add_customer(request, service_id, day_id, time_id):
 # views for profile
 def profile(request, user_id):
     service = Service.objects.get(owner_id=user_id)
-    days = Date.objects.filter(service_id=service.id)
+    days = Date.objects.filter(service_id=service.id, day__in=[i for i in range(datetime.datetime.today().day, 32)])
     times = Time.objects.filter(service_id=service.id,
-                                day__in=[i for i in range(datetime.datetime.today().day, 32)]).order_by('day_id')
+                                day_id__in=[i.id for i in days]).order_by('day_id')
 
     if not request.user.is_authenticated:
         messages.error(request, "You do not have permission to view your profile!")

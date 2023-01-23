@@ -6,6 +6,7 @@ app_name = 'vlads_app'
 
 urlpatterns = [
     path('', home, name='home'),
+    path('news/', news, name='news'),
     path('accounts/register/', user_signup, name='user_signup'),
     path('accounts/login/', user_login, name='user_login'),
     path('accounts/logout/', user_logout, name='logout'),
