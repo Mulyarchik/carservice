@@ -1,45 +1,46 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{ service.name }}
+CarService - {{ service.name }}
 {% endblock %}
 
 {% block content %}
 
 <div class="container-xl">
-    <div class="card-text mb-4 mt-4">
+    <div class="card-text mb-4 mt-2">
         <div class="card-body">
-            <div class="card-body">
+            <div class="card-body" style="margin-left: 50px; margin-right: 50px;">
                 <div class="container">
-                    <div class="card-body">
-                        <h4>{{ service.name }}</h4>
+                    <div class="card-body" style="width: 550px;">
+                        <h4 style="font-weight: normal;"><strong>{{ service.name }}</strong></h4>
                     </div>
                     <div class="row">
                         <div class="col-auto">
-                            <div class="card-body">
-                                {{ service.address }}
+                            <div class="card-body" style="margin-top: 20px;">
+                                <h5 style="font-weight: normal;">{{ service.address }}</h5>
                             </div>
                         </div>
-                        <div class="col-auto">
+                        <div class="col-auto" style="margin-left: 40px; margin-top: 20px;">
                             <div class="card-body">
-                                <strong>Schedule:</strong>
+                                <h5 style="font-weight: normal;"><strong>Schedule:</strong></h5>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" >
+                            <h6 style="font-weight: normal;">
                                 {% for work_day in service.working_days.all %}
                                 <strong>{{ work_day }}</strong>
                                 {% endfor %}
-                                : {{ service.opening_time }} - {{ service.closing_time }}
+                                : {{ service.opening_time }} - {{ service.closing_time }}</h6>
                             </div>
                         </div>
-                        <div class="col-auto">
+                        <div class="col-auto" style="margin-left: 40px; margin-top: 20px;">
                             <div class="card-body">
-                                <strong>Contact details:</strong>
+                                <h5 style="font-weight: normal;"><strong>Contact details:</strong></h5>
                             </div>
                             <div class="card-body">
-                                {{ service.phone_number }}
+                                <h6 style="font-weight: normal;">{{ service.phone_number }}</h6>
                             </div>
                             <div class="card-body">
-                                {{ service.email }}
+                                <h6 style="font-weight: normal;">{{ service.email }}</h6>
                             </div>
                         </div>
                     </div>
@@ -48,9 +49,9 @@
             <div class="container px-5">
                 <div class="container px-5">
                     <div class="container px-5">
-                        <div class="card-text mb-4 mt-4">
+                        <div class="card-text mt-2" style="margin-right: 50px; margin-bottom: -20px;">
                             <div class="row">
-                                <table class="table table-bordered border-primary">
+                                <table class="table table-bordered " style="border-color: #B4B4B4">
                                     <thead>
                                     <tr>
                                         <th scope="col">
@@ -85,25 +86,25 @@
                                             {% if day not in work_days %}
                                                 {% if request.user.id == service.owner_id or request.user.is_staff %}
                                                 <td class="table-active">
-                                                    <div class="card-text mb-2 mt-2" align="center">
+                                                    <div class="card-text mb-1 mt-1" align="center">
                                                         <a href="{% url 'vlads_app:day_update' service.id day %}"
                                                            role="button"
-                                                           style="text-decoration: none;"><h5>{{ day }}</h5></a>
+                                                           style="text-decoration: none;"><h5 style="font-weight: normal;">{{ day }}</h5></a>
                                                     </div>
                                                 </td>
                                                 {% else %}
                                                 <td class="table-active">
-                                                    <div class="card-text mb-2 mt-2" align="center">
-                                                        <h5>{{ day }}</h5>
+                                                    <div class="card-text mb-1 mt-1" align="center">
+                                                        <h5 style="font-weight: normal;">{{ day }}</h5>
                                                     </div>
                                                 </td>
                                                 {% endif %}
                                             {% else %}
                                                 <td>
-                                                    <div class="card-text mb-2 mt-2" align="center">
+                                                    <div class="card-text mb-1 mt-1" align="center">
                                                         <a href="{% url 'vlads_app:time_selection' service.id day %}"
                                                            role="button"
-                                                           style="text-decoration: none;"><h5>{{ day }}</h5></a>
+                                                           style="text-decoration: none;"><h5 style="font-weight: normal;">{{ day }}</h5></a>
                                                     </div>
                                                 </td>
                                             {% endif %}

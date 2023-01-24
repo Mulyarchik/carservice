@@ -69,10 +69,10 @@ def user_signup(request):
             user = user_form.save(commit=False)
             user_form.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            messages.success(request, "Вы успешно зарегестрировались")
+            messages.success(request, "You have successfully registered!")
             return redirect('/')
         else:
-            messages.error(request, "Ошибка регистрации")
+            messages.error(request, "Registration error :(")
         context = {
             'user_form': user_form,
             'error': error
@@ -92,7 +92,7 @@ def user_login(request):
             user = form.get_user()
             login(request, user)
         else:
-            messages.error(request, "Неправильное имя пользователя/пароль!")
+            messages.error(request, "Wrong username/password!")
         return redirect('/')
     else:
         form = LoginUserForm()
@@ -137,7 +137,7 @@ def add_service(request, self=None):
                     data.working_days.add(days)
                 data.save()
         else:
-            messages.error(request, "Вы указали неверные данные!")
+            messages.error(request, "You have entered incorrect data!")
         return redirect('/')
     else:
         form = ServiceForm()
@@ -299,12 +299,12 @@ def add_customer(request, service_id, day_id, time_id):
             try:
                 send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [f'{from_email}'])
             except BadHeaderError:
-                return HttpResponse('Ошибка в теме письма.')
+                return HttpResponse('Error in subject line.')
             messages.success(request, "A confirmation email has been sent to you with all the information.")
             # ___________
             return redirect('/')
         else:
-            messages.error(request, "Даннные введены неверно!")
+            messages.error(request, "Data entered incorrectly!")
         return redirect('/')
     else:
         form = CustomerForm()
@@ -321,6 +321,7 @@ def profile(request, user_id):
     service = Service.objects.get(owner_id=user_id)
     days = Date.objects.filter(service_id=service.id, day__in=[i for i in range(datetime.datetime.today().day, 32)])
     times = Time.objects.filter(service_id=service.id,
+                                customer_id__isnull=False,
                                 day_id__in=[i.id for i in days]).order_by('day_id')
 
     if not request.user.is_authenticated:
@@ -374,7 +375,7 @@ def day_update(request, service_id, day_id):
             messages.success(request, "Day successfully added as working day!")
             return redirect(service.get_absolute_url())
         else:
-            messages.error(request, "Шncorrect data entered!")
+            messages.error(request, "Incorrect data entered!")
             return redirect(service.get_absolute_url())
     else:
         form = CreateDay()

@@ -1,130 +1,130 @@
 {% extends "base.html" %}
 {% block title %}
-{{ service.name }}
+    CarService - {{ service.name }}
 {% endblock %}
 
 {% block content %}
 
-<div class="container-xl" xmlns="http://www.w3.org/1999/html">
-    <div class="card-text mb-4 mt-4">
-        <div class="card-body">
+    <div class="container-xl" xmlns="http://www.w3.org/1999/html">
+        <div class="card-text mb-4 mt-2">
             <div class="card-body">
-                <div class="container">
-                    <div class="card-body">
-                        <h4>{{ service.name }}</h4>
-                    </div>
-                    <div class="row">
-                        <div class="col-auto">
-                            <div class="card-body">
-                                {{ service.address }}
-                            </div>
+                <div class="card-body" style="margin-left: 50px; margin-right: 50px;">
+                    <div class="container">
+                        <div class="card-body" style="width: 550px;">
+                            <h4 style="font-weight: normal;"><strong>{{ service.name }}</strong></h4>
                         </div>
-                        <div class="col-auto">
-                            <div class="card-body">
-                                <strong>Schedule:</strong>
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="card-body">
+                                    <h5 style="font-weight: normal;">{{ service.address }}</h5>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                {% for work_day in service.working_days.all %}
-                                <strong>{{ work_day }}</strong>
-                                {% endfor %}
-                                : {{ service.opening_time }} - {{ service.closing_time }}
+                            <div class="col-auto" style="margin-left: 40px;">
+                                <div class="card-body">
+                                    <h5 style="font-weight: normal;"><strong>Schedule:</strong></h5>
+                                </div>
+                                <div class="card-body">
+                                    <h6 style="font-weight: normal;">
+                                        {% for work_day in service.working_days.all %}
+                                            <strong>{{ work_day }}</strong>
+                                        {% endfor %}
+                                        : {{ service.opening_time }} - {{ service.closing_time }}</h6>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-auto">
-                            <div class="card-body">
-                                <strong>Contact details:</strong>
-                            </div>
-                            <div class="card-body">
-                                {{ service.phone_number }}
-                            </div>
-                            <div class="card-body">
-                                {{ service.email }}
+                            <div class="col-auto" style="margin-left: 40px;">
+                                <div class="card-body">
+                                    <h5 style="font-weight: normal;"><strong>Contact details:</strong></h5>
+                                </div>
+                                <div class="card-body">
+                                    <h6 style="font-weight: normal;">{{ service.phone_number }}</h6>
+                                </div>
+                                <div class="card-body">
+                                    <h6 style="font-weight: normal;">{{ service.email }}</h6>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <p class="card-text mb-4 mt-4">
-
-                <div class="card-text mb-4 mt-4">
+                <div class="card-text mb-4 mt-4" style="margin-left: 50px; margin-right: 50px;">
                     {% if times %}
-                    <h6>Choose a convenient time for you: </h6>
-                    {% for time in times %}
-                    <div class="d-inline-block p-2 m-2 ">
-                        <a href="{% url 'vlads_app:add_customer' service.id day.id time.id %}" role="button"
-                           style="text-decoration: none;">
-                            <button type="button" class="btn btn-secondary">{{ time.time|date:"H:i" }}</button>
-                        </a>
-                    </div>
-                    {% endfor %}
-                    {% if request.user.id == service.owner_id %}
-                    <div class="card-text mb-4 mt-4">
-                        <h6>Choose the action you would like to take: </h6>
-                        <a href="{% url 'vlads_app:day_delete' service.id day.id %}" role="button"
-                           style="text-decoration: none;">
-                            <button type="button" class="btn btn-danger">Remove a day from work</button>
-                        </a>
-                    </div>
-                    {% endif %}
+                        <h6>Choose a convenient time for you: </h6>
+                        {% for time in times %}
+                            <div class="d-inline-block p-2 m-2 ">
+                                <a href="{% url 'vlads_app:add_customer' service.id day.id time.id %}" role="button"
+                                   style="text-decoration: none;">
+                                    <button type="button"
+                                            class="btn btn-secondary">{{ time.time|date:"H:i" }}</button>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% if request.user.id == service.owner_id %}
+                            <div class="card-text mb-4 mt-4">
+                                <h6>Choose the action you would like to take: </h6>
+                                <a href="{% url 'vlads_app:day_delete' service.id day.id %}" role="button"
+                                   style="text-decoration: none;">
+                                    <button type="button" class="btn btn-danger">Remove a day from work</button>
+                                </a>
+                            </div>
+                        {% endif %}
                     {% else %}
-                    <h6>Choose the action you would like to take: </h6>
-                    <form action="{% url 'vlads_app:day_update' service.id day %}" method="POST">
-                        {% csrf_token %}
-                        <div class="card-text mb-2 mt-2">
-                            <label for="id_recording_time">Recording time:</label>
-                            <select class="js-recording_time form-control" name="recording_time"
-                                    id="id_recording_time">
-                                {% for recording_time in recording_times %}
-                                <option value="{{ recording_time }}">{{ recording_time }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="card-text mb-2 mt-2">
-                            <label for="id_opening_time">Opening time:</label>
-                            <input type="text" class="form-control" id="id_opening_time" name="opening_time"
-                                   placeholder="janem">
-                        </div>
-                        <div class="card-text mb-2 mt-2">
-                            <label for="id_closing_time">Closing time:</label>
-                            <input type="text" class="form-control" id="id_closing_time" name="closing_time"
-                                   placeholder="janem">
-                        </div>
-                        <button type="submit" class="btn btn-danger">Add a day as a working day</button>
+                        <h6>Choose the action you would like to take: </h6>
+                        <form action="{% url 'vlads_app:day_update' service.id day %}" method="POST">
+                            {% csrf_token %}
+                            <div class="card-text mb-2 mt-2">
+                                <label for="id_recording_time">Recording time:</label>
+                                <select class="js-recording_time form-control" name="recording_time"
+                                        id="id_recording_time">
+                                    {% for recording_time in recording_times %}
+                                        <option value="{{ recording_time }}">{{ recording_time }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="card-text mb-2 mt-2">
+                                <label for="id_opening_time">Opening time:</label>
+                                <input type="text" class="form-control" id="id_opening_time" name="opening_time"
+                                       placeholder="janem">
+                            </div>
+                            <div class="card-text mb-2 mt-2">
+                                <label for="id_closing_time">Closing time:</label>
+                                <input type="text" class="form-control" id="id_closing_time" name="closing_time"
+                                       placeholder="janem">
+                            </div>
+                            <button type="submit" class="btn btn-danger">Add a day as a working day</button>
 
-                    </form>
+                        </form>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    $(function () {
-        $("#id_opening_time").timepicker({
-            timeFormat: 'HH:mm',
-            ampm: false,
-            interval: 60,
-            minTime: '5',
-            maxTime: '11:00pm',
-            defaultTime: '8',
-            startTime: '05:00',
-            dynamic: false,
-            dropdown: true,
-            scrollbar: true
+    <script>
+        $(function () {
+            $("#id_opening_time").timepicker({
+                timeFormat: 'HH:mm',
+                ampm: false,
+                interval: 60,
+                minTime: '5',
+                maxTime: '11:00pm',
+                defaultTime: '8',
+                startTime: '05:00',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: true
+            });
+            $("#id_closing_time").timepicker({
+                timeFormat: 'HH:mm',
+                ampm: false,
+                interval: 60,
+                minTime: '5',
+                maxTime: '11:00pm',
+                defaultTime: '20',
+                startTime: '05:00',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: true
+            });
         });
-        $("#id_closing_time").timepicker({
-            timeFormat: 'HH:mm',
-            ampm: false,
-            interval: 60,
-            minTime: '5',
-            maxTime: '11:00pm',
-            defaultTime: '20',
-            startTime: '05:00',
-            dynamic: false,
-            dropdown: true,
-            scrollbar: true
-        });
-    });
-</script>
+    </script>
 
 {% endblock %}

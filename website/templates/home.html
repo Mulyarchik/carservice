@@ -1,181 +1,237 @@
 {% extends "base.html" %}
 {% block title %}
-NickForum - Forum for coders
+    CarService - Website with many car diagnostic stations
+{% endblock %}
+
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/stylesheet_home.css' %}" type="text/css">
 {% endblock %}
 
 {% block content %}
 
-<div class="container-xl">
-    <div class="card-text mb-4 mt-4">
-        <div class="card-body" style="width: 100%; height: 100%; margin-left: 100px">
-            <h2 style="color: #fc0404;"><strong>Сервис для записи на диагностические станции техосмотра</strong></h2>
-        </div>
-        <div class="card-body mb-4 mt-5">
-            <p class="text">
-            <h4>Техосмотр. Что это и зачем он нужен:</h4>
-            </p>
-            <div class="card-text mb-4 mt-2">
-                Прохождение техосмотра транспортного средства — обязательная
-                процедура для всех автовладельцев,
-                принимающих участие в дорожном движении, закрепленная на законодательном уровне в Беларуси.
-            </div>
-        </div>
-        <div class="card-body mb-4 mt-4">
-            <p class="text">
-            <h4>Где пройти техосмотр:</h4>
-            </p>
-            <div class="card-text mb-4 mt-2">
-                На нашем сайте в разделе "<a href="services/"><span
-                    style="color: #fc0404;"><strong>Services</strong></span></a>" вы можете выбрать ближайшую удобную
-                для вас станцию и записаться на
-                нужное вам время.
-            </div>
-        </div>
-        <div class="card-body mb-4 mt-4">
-            <p class="text">
-            <h4>Как часто нужно проходить техосмотр:</h4>
-            </p>
-            <div class="card-text mb-4 mt-2">
-                Если возраст транспортного средства не превышает 10 лет, а масса не выше 750 кг, то проходить
-                диагностику нужно 1 раз в 2 года. Это касается легковых автомобилей, прицепов, мототехники.<br><br>
+    <div class="container-xl">
+        <div class="card-text mb-4 mt-5 box">
+            <div class="d-flex">
+                <div class="flex-shrink-0 mt-4" style="margin-left: 50px;">
+                    <div class="col-md-4 img-box">
+                        <img src="/media/home1.jpg" width="400" alt="arrow_right" style="border-radius: 10px;">
+                    </div>
+                </div>
+                <div class="card-flex-grow-1 ms-5 mr-4" style="margin-right: 50px;">
+                    <div class="card-text" style=" height: 30px;">
+                        <h3 style="font-family: Roboto"><i><strong>Welcome to</strong></i></h3>
+                    </div>
 
-                Если автомобилю более 10 лет, а масса не превышает 750 кг, диагностика требуется 1 раз в год. Это
-                актуально как для легковых автомобилей, так и для тягачей, грузовиков, прицепов. Такси должны проходить
-                техосмотр 1 раз в полгода.<br><br>
+                    <div class="card-text" style="margin-left: 100px;">
+                        <h3 style="font-family: Roboto"><i><strong>CarService</strong></i></h3>
+                    </div>
 
-                Обладателям новых автомобилей или машин, чей срок выпуска не превышает 2 года, проходить диагностику на
-                станции не нужно. Достаточно лишь, приехав туда, предъявить аптечку, огнетушитель и знак аварийной
-                остановки.<br><br>
-
-                Важно: после регистрации транспортного средства владелец обязан пройти техосмотр в течение 10 дней.
-            </div>
-        </div>
-        <div class="card-body mb-4 mt-4">
-            <p class="text">
-            <h4>Пошаговый алгоритм прохождения технического осмотра:</h4>
-            </p>
-            <h5><strong>По прибытию на диагностическую станцию вам необходимо:</strong></h5>
-            <div class="card-text mb-4 mt-4">
-                <div class="d-flex">
-                    <div class="flex-shrink-0 mt-2">
-                        <img src="/media/arrow_right.png" width="20" alt="arrow_right">
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                        Предоставить в окно приема документы для внесения данных о транспортном средстве и владельце
-                        (представителе владельца) в базу данных и систему контроля;
-                    </div>
-                </div>
-            </div>
-            <div class="card-text mb-4 mt-4">
-                <div class="d-flex">
-                    <div class="flex-shrink-0 mt-2">
-                        <img src="/media/arrow_right.png" width="20" alt="arrow_right">
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                        Оплатить услуги диагностической станции и госпошлину за допуск в дорожном движении, можно
-                        оплатить непосредственно на станции диагностики или заранее через систему ЕРИП;
-                    </div>
-                </div>
-            </div>
-            <div class="card-text mb-4 mt-4">
-                <div class="d-flex">
-                    <div class="flex-shrink-0 mt-2">
-                        <img src="/media/arrow_right.png" width="20" alt="arrow_right">
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                        Пройти технический осмотр на диагностической линии;
-                    </div>
-                </div>
-            </div>
-            <div class="card-text mb-4 mt-4">
-                <div class="d-flex">
-                    <div class="flex-shrink-0 mt-2">
-                        <img src="/media/arrow_right.png" width="20" alt="arrow_right">
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                        Получить диагностическую карту с результатами осмотра;
-                    </div>
-                </div>
-            </div>
-            <div class="card-text mb-4 mt-4">
-                <div class="d-flex">
-                    <div class="flex-shrink-0 mt-2">
-                        <img src="/media/arrow_right.png" width="20" alt="arrow_right">
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                        Предоставить на проверку документы и пройти сверку марки, модели, цвета, года выпуска, номерных
-                        знаков и номеров агрегатов;
-                    </div>
-                </div>
-            </div>
-            <div class="card-text mb-4 mt-4">
-                <div class="d-flex">
-                    <div class="flex-shrink-0 mt-2">
-                        <img src="/media/arrow_right.png" width="20" alt="arrow_right">
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                        Получить разрешение на допуск к участию в дорожном движении транспортного средства с отметкой о
-                        прохождении техосмотра и вашу копию диагностической карты.
+                    <div class="card-text" style="margin-top: 20px;">
+                        <h4 style="font-weight: normal;">
+                            This service will help you solve all your technical inspection problems. Now you can book an
+                            appointment at many car services throughout Belarus in two clicks.<br><br>
+                            We hope this service will be useful for you. Just enjoy!
+                        </h4>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card-body mb-4 mt-5">
-            <p class="text">
-            <h4>Какие документы нужны для прохождения техосмотра, перечень:</h4>
-            </p>
-            <div class="card-text mb-4 mt-4">
-                <div class="d-flex">
-                    <div class="flex-shrink-0 mt-2">
-                        <img src="/media/arrow_right.png" width="20" alt="arrow_right">
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                        действительное водительское удостоверение на управление транспортным средством соответствующей
-                        категории (талон теперь не требуют, так как он отменен со 02.01.2020 года согласно указу № 492
-                        от 30 декабря 2019 года)
-                    </div>
+        <div class="card-text mb-4 mt-4" style="margin-left: 50px; margin-right: 50px;">
+            <div class="card-text mb-4" style="margin-top: 70px;">
+                <p class="text">
+                <h4>Vehicle inspection. What is it and why is it needed:</h4>
+                </p>
+                <div class="card-text mb-4 mt-2">
+                    <h5 style="font-weight: normal;">
+                        Passing a vehicle inspection is a must
+                        procedure for all car owners,
+                        participating in road traffic, enshrined at the legislative level in Belarus.</h5>
                 </div>
             </div>
-            <div class="card-text mb-4 mt-4">
-                <div class="d-flex">
-                    <div class="flex-shrink-0 mt-2">
-                        <img src="/media/arrow_right.png" width="20" alt="arrow_right">
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                        свидетельство о регистрации транспортного средства (техпаспорт) (сертификат, в котором ранее
-                        ставилась отметка о прохождении техпаспорта отменен со 02.01.2020 года согласно указу № 492 от
-                        30 декабря 2019 года, подробнее)
-                    </div>
+            <div class="card-body mb-5 mt-5">
+                <p class="text">
+                <h4>Where to get a vehicle inspection:</h4>
+                </p>
+                <div class="card-text mb-4 mt-2">
+                    <h5 style="font-weight: normal;">On our website in the section "<a href="services/"><span
+                            style="color: #fc0404;"><strong>Services</strong></span></a>" you can choose the nearest
+                        convenient
+                        for you station and sign up for
+                        the time you need..</h5>
                 </div>
             </div>
-            <div class="card-text mb-4 mt-4">
-                <div class="d-flex">
-                    <div class="flex-shrink-0 mt-2">
-                        <img src="/media/arrow_right.png" width="20" alt="arrow_right">
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                        страховой полис обязательного страхования гражданской ответственности транспортных
-                        средств(«автогражданку»)
-                    </div>
+            <div class="card-body mb-5 mt-5">
+                <p class="text">
+                <h4>How often do you need to have a vehicle inspection:</h4>
+                </p>
+                <div class="card-text mb-4 mt-2">
+                    <h5 style="font-weight: normal;">If the age of the vehicle does not exceed 10 years, and the mass
+                        does not
+                        above 750 kg, then pass
+                        Diagnosis is required once every 2 years. This applies to cars, trailers,
+                        motor vehicles.<br><br>
+
+                        If the car is more than 10 years old, and the weight does not exceed 750 kg, diagnostics are
+                        required once a year.
+                        it
+                        relevant for both cars and tractors, trucks, trailers. Taxi must
+                        pass
+                        inspection once every six months.<br><br>
+
+                        Owners of new cars or cars whose production period does not exceed 2 years must pass
+                        diagnostics for
+                        station is not required. All you have to do is present a first aid kit, a fire extinguisher and
+                        a sign when you arrive there.
+                        emergency
+                        stops.<br><br>
+
+                        Important: after registering the vehicle, the owner is obliged to pass a technical inspection
+                        within 10
+                        days.</h5>
                 </div>
             </div>
-            <div class="card-text mb-4 mt-4">
-                <div class="d-flex">
-                    <div class="flex-shrink-0 mt-2">
-                        <img src="/media/arrow_right.png" width="20" alt="arrow_right">
+            <div class="card-body mb-5 mt-5">
+                <p class="text">
+                <h4>Step-by-step algorithm for passing a technical inspection of a car:</h4>
+                </p>
+                <h5><strong>Upon arrival at the diagnostic station, you need to:</strong></h5>
+                <div class="card-text mb-4 mt-4">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 mt-2">
+                            <img src="/media/arrow_right.png" width="20" alt="arrow_right">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 style="font-weight: normal;">Provide documents to the reception window for entering data
+                                on
+                                vehicle and owner
+                                (owner's representative) to the database and control system;</h5>
+                        </div>
                     </div>
-                    <div class="flex-grow-1 ms-3">
-                        квитанцию об оплате госпошлины за выдачу разрешения на допуск транспортного средства к участию в
-                        дорожном движении.
+                </div>
+                <div class="card-text mb-4 mt-4">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 mt-2">
+                            <img src="/media/arrow_right.png" width="20" alt="arrow_right">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 style="font-weight: normal;">Pay for the services of the diagnostic station and the
+                                state duty for
+                                road traffic permit
+                                pay directly at the diagnostic station or in advance through the ERIP system;</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-text mb-4 mt-4">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 mt-2">
+                            <img src="/media/arrow_right.png" width="20" alt="arrow_right">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 style="font-weight: normal;">Pass a technical inspection on the diagnostic line;</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-text mb-4 mt-4">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 mt-2">
+                            <img src="/media/arrow_right.png" width="20" alt="arrow_right">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 style="font-weight: normal;">Get a diagnostic card with the results of the
+                                examination;</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-text mb-4 mt-4">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 mt-2">
+                            <img src="/media/arrow_right.png" width="20" alt="arrow_right">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 style="font-weight: normal;">Submit documents for verification and undergo brand
+                                verification,
+                                model, color, year of manufacture, license plate
+                                signs and unit numbers;</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-text mb-4 mt-4">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 mt-2">
+                            <img src="/media/arrow_right.png" width="20" alt="arrow_right">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 style="font-weight: normal;">Obtain a permit to participate in road traffic
+                                vehicle marked with
+                                technical inspection and your copy of the diagnostic card.</h5>
+                        </div>
                     </div>
                 </div>
             </div>
 
-
+            <div class="card-body mb-5 mt-5">
+                <p class="text">
+                <h4>What documents are needed to pass the technical inspection, the list:</h4>
+                </p>
+                <div class="card-text mb-4 mt-4">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 mt-2">
+                            <img src="/media/arrow_right.png" width="20" alt="arrow_right">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 style="font-weight: normal;">valid driving license
+                                appropriate vehicle
+                                category (the coupon is no longer required, since it was canceled from 01/02/2020 in
+                                accordance with the decree
+                                No. 492
+                                December 30, 2019)</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-text mb-4 mt-4">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 mt-2">
+                            <img src="/media/arrow_right.png" width="20" alt="arrow_right">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 style="font-weight: normal;">vehicle registration certificate
+                                (registration certificate) (certificate in which previously
+                                a mark was made on the passage of the technical passport canceled from 01/02/2020
+                                according to decree No.
+                                492 off
+                                December 30, 2019 (details)</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-text mb-4 mt-4">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 mt-2">
+                            <img src="/media/arrow_right.png" width="20" alt="arrow_right">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 style="font-weight: normal;">compulsory civil insurance policy
+                                responsibility of transport
+                                funds ("autocitizen")</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-text mb-4 mt-4">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 mt-2">
+                            <img src="/media/arrow_right.png" width="20" alt="arrow_right">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 style="font-weight: normal;">receipt of payment of the state duty for issuing a permit
+                                for
+                                eligibility of a vehicle to participate in
+                                road traffic.</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
-</div>
 
 {% endblock %}

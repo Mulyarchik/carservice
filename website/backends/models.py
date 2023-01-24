@@ -20,7 +20,7 @@ class RecordingTime(models.Model):
 
 
 class Service(models.Model):
-    name = models.CharField(max_length=50, verbose_name='Name')
+    name = models.CharField(max_length=100, verbose_name='Name')
     address = models.CharField(max_length=50, verbose_name='Address')
     website = models.URLField(max_length=200, verbose_name='URL')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, blank=True)

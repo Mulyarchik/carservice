@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a5dd9e61-da55-4d1f-b37a-3937953d3550" name="Changes" comment="added the ability to select a work schedule for an individual day">
-      <change afterPath="$PROJECT_DIR$/website/templates/news.html" afterDir="false" />
+    <list default="true" id="a5dd9e61-da55-4d1f-b37a-3937953d3550" name="Changes" comment="added page &quot;news&quot; and fixed minor bugs">
+      <change beforePath="$PROJECT_DIR$/.idea/website_carservice.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/website_carservice.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/backends/test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/backends/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/backends/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/backends/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/add_customer.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/add_customer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/add_service.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/add_service.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/day_selection.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/day_selection.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/templates/list_of_services.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/list_of_services.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/news.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/news.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/templates/time_selection.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/time_selection.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/templates/view_profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/view_profile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/website/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/website/settings.py" afterDir="false" />
     </list>
@@ -21,9 +27,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="CSS File" />
         <option value="Python Script" />
         <option value="HTML File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -46,7 +52,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/v_mul/PycharmProjects/project_unik&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.django.DjangoModulesConfigurable&quot;
   },
   &quot;keyToStringList&quot;: {
     &quot;DatabaseDriversLRU&quot;: [
@@ -222,7 +228,11 @@
       <workItem from="1674381934213" duration="8621000" />
       <workItem from="1674408142192" duration="6691000" />
       <workItem from="1674472973684" duration="1051000" />
-      <workItem from="1674478783450" duration="4005000" />
+      <workItem from="1674478783450" duration="9555000" />
+      <workItem from="1674501092311" duration="1504000" />
+      <workItem from="1674505151304" duration="2329000" />
+      <workItem from="1674553343542" duration="645000" />
+      <workItem from="1674578547482" duration="7213000" />
     </task>
     <task id="LOCAL-00001" summary="create app &quot;backends&quot;">
       <created>1673086621076</created>
@@ -287,7 +297,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674310428986</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="added page &quot;news&quot; and fixed minor bugs">
+      <created>1674482887262</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1674482887262</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -314,7 +331,8 @@
     <MESSAGE value="added the ability to include working days" />
     <MESSAGE value="added timing of one recording when connecting the service" />
     <MESSAGE value="added the ability to select a work schedule for an individual day" />
-    <option name="LAST_COMMIT_MESSAGE" value="added the ability to select a work schedule for an individual day" />
+    <MESSAGE value="added page &quot;news&quot; and fixed minor bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="added page &quot;news&quot; and fixed minor bugs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
