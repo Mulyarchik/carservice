@@ -8,55 +8,60 @@
     <div class="container-xl" xmlns="http://www.w3.org/1999/html">
         <div class="card-text mb-3" style="margin-left: 50px; margin-left: 50px; margin-top: 50px;">
             <div class="card-body">
-                <div class="card-text mb-3 mt-4">
-
-                    <div class="card-text">
-                        <p class="card-text" style="margin-left:20px;"><h4 style="font-weight: normal;">
-                        <strong>{{ service.name }}</strong></h4></p>
-                    </div>
-                    {% if times %}
+                {% if service %}
+                    <div class="card-text mb-3 mt-4">
                         <div class="card-text">
-                            <p class="card-text" style="margin-left:20px;"><h5 style="font-weight: normal;"><strong>All
-                            available records will be displayed
-                            here:</strong></h5></p>
+                            <p class="card-text" style="margin-left:20px;"><h4 style="font-weight: normal;">
+                            <strong>{{ service.name }}</strong></h4></p>
                         </div>
-                        <div class="card-text mb-3 mt-4">
-                            {% for time in times %}
-                                {% if time.customer %}
-                                    <div class="card-text">
-                                        <p class="card-text" style="margin-left:20px;">
-                                        <h6 style="font-weight: normal;">{{ time.day.date_for_profile }}, {{ time }} --
-
-
-                                            <a class="btn btn-primary" data-bs-toggle="collapse"
-                                               href="#{{ time.customer }}"
-                                               role="button"
-                                               aria-expanded="false" aria-controls="{{ time.customer }}">
-                                                {{ time.customer.name }} {{ time.customer.surname }}
-                                            </a>
-
-                                        </h6>
-                                        </p>
-                                        <div class="collapse" id="{{ time.customer }}">
-                                            <div class="card card-body">
-                                                {{ time.customer.name }}
-                                                {{ time.customer.surname }}
-                                                {{ time.customer.patronymic }}
-                                                <div>{{ time.customer.car }}</div>
-                                                <div>{{ time.customer.phone_number }}</div>
-                                                <div>{{ time.customer.email }}</div>
+                        {% if times %}
+                            <div class="card-text">
+                                <p class="card-text" style="margin-left:20px;"><h5 style="font-weight: normal;"><strong>All
+                                available records will be displayed
+                                here:</strong></h5></p>
+                            </div>
+                            <div class="card-text mb-3 mt-4">
+                                {% for time in times %}
+                                    {% if time.customer %}
+                                        <div class="card-text">
+                                            <p class="card-text" style="margin-left:20px;">
+                                            <h6 style="font-weight: normal;">{{ time.day.date_for_profile }}, {{ time }}
+                                                --
+                                                <a class="btn btn-primary" data-bs-toggle="collapse"
+                                                   href="#{{ time.customer }}"
+                                                   role="button"
+                                                   aria-expanded="false" aria-controls="{{ time.customer }}">
+                                                    {{ time.customer.name }} {{ time.customer.surname }}
+                                                </a>
+                                            </h6>
+                                            </p>
+                                            <div class="collapse" id="{{ time.customer }}">
+                                                <div class="card card-body">
+                                                    {{ time.customer.name }}
+                                                    {{ time.customer.surname }}
+                                                    {{ time.customer.patronymic }}
+                                                    <div>{{ time.customer.car }}</div>
+                                                    <div>{{ time.customer.phone_number }}</div>
+                                                    <div>{{ time.customer.email }}</div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="card-text">
-                            <p class="card-text" style="margin-left:20px;"><h5>No records available yet :(</h5></p>
-                        </div>
-                    {% endif %}
-                </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="card-text">
+                                <p class="card-text" style="margin-left:20px;"><h5>No records available yet :(</h5></p>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="card-text mb-3 mt-4">
+                        <p class="card-text" style="margin-left:20px;"><h4>No connected services</h4></p>
+                        <p class="card-text" style="margin-left:20px;"><h5>If you want to connect the service - go to
+                        the <a href="/service/add/">Service connection page</a></h5></p>
+                    </div>
+                {% endif %}
                 <div class="card-text mb-4 mt-5">
                     <p class="card-text"><strong>Name:</strong> {{ user.first_name }}</p>
                     <p class="card-text"><strong>Surname:</strong> {{ user.last_name }}</p>
@@ -65,7 +70,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
 {% endblock %}

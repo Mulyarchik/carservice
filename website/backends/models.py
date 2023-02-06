@@ -1,5 +1,6 @@
 import datetime
 
+import pandas as pd
 from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
@@ -10,6 +11,9 @@ class DayOfWeek(models.Model):
 
     def __str__(self):
         return str(self.name)[:3]
+
+    def create(self):
+        pass
 
 
 class RecordingTime(models.Model):
@@ -33,15 +37,15 @@ class Service(models.Model):
                                  message="Phone number must be entered in the format: '+375(29)12-12-123'. Up to 12 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=13, blank=True)
 
+    class Meta:
+        verbose_name = 'Service'
+        verbose_name_plural = 'Services'
+
     def get_absolute_url(self):
         return "/service/%i/" % self.pk
 
     def __str__(self):
         return self.name
-
-    class Meta:
-        verbose_name = 'Service'
-        verbose_name_plural = 'Services'
 
 
 class Date(models.Model):
@@ -56,10 +60,15 @@ class Date(models.Model):
     def __str__(self):
         return str(self.day)
 
+    def create(self, service_id, working_days):
+        for day in working_days:
+            Date.objects.create(day=day, service_id=service_id)
+
     def get_absolute_url(self):
         return "/date/%i/" % self.pk
 
     class Meta:
+        ordering = ['pk']
         verbose_name = 'Date'
         verbose_name_plural = 'Dates'
 
@@ -73,7 +82,18 @@ class Time(models.Model):
     def __str__(self) -> str:
         return str(self.time)[:5]
 
+    def add(self, service, day, recording_time):
+        if str(recording_time) == '00:30':
+            freq = '0.5H'
+        elif str(recording_time) == '01:00':
+            freq = '1H'
+        time_list = pd.timedelta_range(start=str(service.opening_time), end=str(service.closing_time),
+                                       freq=freq).tolist()
+        for i in time_list:
+            Time.objects.create(time=str(i)[7:12], day_id=day.id, service_id=service.id)
+
     class Meta:
+        ordering = ['pk']
         verbose_name = 'Time'
         verbose_name_plural = 'Times'
 

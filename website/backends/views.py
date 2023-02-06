@@ -8,13 +8,14 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.mail import send_mail, BadHeaderError
+from django.core.mail import send_mail
 from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from psycopg2 import DatabaseError
 
 from .forms import CustomerForm, UserForm, LoginUserForm, ServiceForm, CreateDay
-from .models import Date, Time, DayOfWeek, Service, RecordingTime
+from .models import Date, Time, DayOfWeek, Service, RecordingTime, Customer
 
 
 def home(request):
@@ -108,7 +109,7 @@ def user_logout(request):
     return redirect('/')
 
 
-def add_service(request, self=None):
+def add_service(request):
     recording_time = RecordingTime.objects.all()
 
     if not request.user.is_authenticated:
@@ -116,31 +117,18 @@ def add_service(request, self=None):
         return redirect('/accounts/login/')
 
     days = DayOfWeek.objects.all()
-
     if request.method == 'POST':
-        form = ServiceForm(data=request.POST)
+        form = ServiceForm(request.POST, user=request.user, recording_time=request.POST['recording_time'],
+                           working_days=request.POST.getlist('working_days'))
         if form.is_valid():
-            data = form.save(commit=False)
-            data.owner = request.user
-            data.save()
-
-            data.recording_time.add(request.POST['recording_time'])
-            data.save()
-
-            service = data.id
-            list_of_days = request.POST.getlist('working_days')
-            create_working_days(request, service, list_of_days)
-
             with transaction.atomic():
-                for day in list_of_days:
-                    days = DayOfWeek.objects.get(pk=day)
-                    data.working_days.add(days)
-                data.save()
+                service_id = form.save()
+                Date().create(service_id, create_working_days(request.POST.getlist('working_days')))
         else:
             messages.error(request, "You have entered incorrect data!")
         return redirect('/')
     else:
-        form = ServiceForm()
+        form = ServiceForm(user=request.user, recording_time=None, working_days=None)
 
     context = {
         'form': form,
@@ -150,41 +138,30 @@ def add_service(request, self=None):
     return render(request, 'add_service.html', context=context)
 
 
-def create_working_days(request, service_id, list_of_days):
-    # индексы рабочих дней
-    service_work_days = []
+def create_working_days(list_of_days):
+    # working day indexes
+    working_day_indexes = []
     for i in list_of_days:
-        service_work_days.append(int(i))
+        working_day_indexes.append(int(i))
 
-    # все дни месяца
-    total_list = []
-    c = calendar.TextCalendar(calendar.MONDAY)
-    for i in c.itermonthdays(datetime.datetime.today().year, datetime.datetime.today().month):
-        total_list.append(i)
-    total_list = list(filter(lambda num: num != 0, total_list))
+    # number of days in a month
+    days = calendar.monthrange(datetime.datetime.now().year, datetime.datetime.now().month)[1]
 
-    # рабочие дни сервиса
-    total_work_days = []
-    for i in total_list:
+    service_work_days = []
+    for i in range(1, days + 1):
         obj = datetime.datetime(datetime.datetime.today().year, datetime.datetime.today().month, i).isoweekday()
-        if obj not in service_work_days:
+        if obj not in working_day_indexes:
             continue
         else:
-            total_work_days.append(i)
-
-    with transaction.atomic():
-        for i in total_work_days:
-            Date.objects.create(day=i, service_id=service_id)
-
-    return messages.success(request, "Сalendar with custom for your service successfully created")
+            service_work_days.append(i)
+    return service_work_days
 
 
 def service_selection(request):
-    services = Service.objects.all()
+    services = Service.objects.all().order_by('-pk')
 
     context = {
         'services': services,
-
     }
 
     return render(request, 'list_of_services.html', context=context)
@@ -249,59 +226,33 @@ def time_selection(request, service_id, day_id):
     recording_time = RecordingTime.objects.get(service=service_id)
 
     if not time.exists():
-        if str(recording_time) == '00:30':
-            freq = '0.5H'
-        elif str(recording_time) == '01:00':
-            freq = '1H'
-        time_list = pd.timedelta_range(start=str(service.opening_time), end=str(service.closing_time),
-                                       freq=freq).tolist()
-        for i in time_list:
-            Time.objects.create(time=str(i)[7:12], day_id=day.id, service_id=service_id)
+        Time().add(service, day, recording_time)
 
     context = {
         'service': service,
         'times': time,
         'day': day,
-        # 'recording_times': recording_time
     }
 
     return render(request, 'time_selection.html', context=context)
 
 
 def add_customer(request, service_id, day_id, time_id):
-    service = Service.objects.get(pk=service_id)
-    day = Date.objects.get(pk=day_id)
-
     if request.method == 'POST':
         form = CustomerForm(request.POST)
         if form.is_valid():
-            date = form.save(commit=False)
-            date.save()
-            my_time = Time.objects.filter(pk=time_id)
-            my_time.update(customer_id=date.id)
-            messages.success(request, "We inform you that the booking was successful!")
-
-            # _____email_____
-            from_email = request.POST['email']
-            name = request.POST['name']
-            surname = request.POST['surname']
-            for i in my_time:
-                my_time = i
-            date_record = datetime.date(datetime.datetime.today().year, datetime.datetime.today().month,
-                                        day.day).strftime('%A, %d %B')
-            subject = f"Signing up for an Car Workshop {service.name}"
-            message = f'Dear {surname} {name}. \n' \
-                      f'We inform you that the booking was successful. \n' \
-                      f'You are signed up for a service at the {service.name} on {date_record} at {my_time}. \n' \
-                      f'Adress: {service.address}. \n\n' \
-                      f'Phone number: {service.phone_number}. \n' \
-                      f'Email: {service.email}. \n'
             try:
-                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [f'{from_email}'])
-            except BadHeaderError:
-                return HttpResponse('Error in subject line.')
-            messages.success(request, "A confirmation email has been sent to you with all the information.")
-            # ___________
+                with transaction.atomic():
+                    date = form.save(commit=False)
+                    date.save()
+                    Time.objects.filter(pk=time_id).update(customer_id=date.id)
+                    send_email_to_user(day_id, time_id, service_id)
+                    messages.success(request, "We inform you that the booking was successful!")
+                    messages.success(request, "A confirmation email has been sent to you with all the information.")
+            except FailSendMessage:
+                messages.error(request, "Failed to send email. Please repeat again :(")
+            except Exception as e:
+                messages.error(request, "A system error has occurred. Please re-register :(")
             return redirect('/')
         else:
             messages.error(request, "Data entered incorrectly!")
@@ -316,23 +267,51 @@ def add_customer(request, service_id, day_id, time_id):
     return render(request, 'add_customer.html', context=context)
 
 
+def send_email_to_user(day_id, time_id, service_id):
+    service = Service.objects.get(pk=service_id)
+    day = Date.objects.get(pk=day_id)
+    time = Time.objects.get(pk=time_id)
+    customer = Customer.objects.get(pk=time.customer.id)
+
+    date_record = datetime.date(datetime.datetime.today().year, datetime.datetime.today().month,
+                                day.day).strftime('%A, %d %B')
+    subject = f"Signing up for an Car Workshop {service.name}"
+    message = f'Dear {customer.surname} {customer.name}. \n' \
+              f'We inform you that the booking was successful. \n' \
+              f'You are signed up for a service at the {service.name} on {date_record} at {time}. \n' \
+              f'Adress: {service.address}. \n\n' \
+              f'Service Phone number: {service.phone_number} \n' \
+              f'Service Email: {service.email} \n\n' \
+              f'Sincerely. Service administration'
+    try:
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [f'{customer.email}'])
+    except Exception as e:
+        raise FailSendMessage()
+
+
+class FailSendMessage(Exception):
+    """An error occurred while sending the message"""
+
+
 # views for profile
 def profile(request, user_id):
-    service = Service.objects.get(owner_id=user_id)
-    days = Date.objects.filter(service_id=service.id, day__in=[i for i in range(datetime.datetime.today().day, 32)])
-    times = Time.objects.filter(service_id=service.id,
-                                customer_id__isnull=False,
-                                day_id__in=[i.id for i in days]).order_by('day_id')
+    try:
+        service = Service.objects.get(owner_id=user_id)
+        days = Date.objects.filter(service_id=service.id, day__in=[i for i in range(datetime.datetime.today().day, 32)])
+        times = Time.objects.filter(service_id=service.id,
+                                    customer_id__isnull=False,
+                                    day_id__in=[i.id for i in days]).order_by('day_id')
+        context = {
+            'service': service,
+            'days': days,
+            'times': times
+        }
+    except ObjectDoesNotExist:
+        context = {}
 
     if not request.user.is_authenticated:
         messages.error(request, "You do not have permission to view your profile!")
         return redirect('/')
-
-    context = {
-        'service': service,
-        'days': days,
-        'times': times
-    }
 
     return render(request, 'view_profile.html', context=context)
 
@@ -361,19 +340,24 @@ def day_update(request, service_id, day_id):
     if request.method == 'POST':
         form = CreateDay(request.POST)
         if form.is_valid():
-            day = Date.objects.create(day=day_id, service_id=service_id)
-            recording_time = request.POST['recording_time']
-            opening_time = request.POST['opening_time'] + ':00'
-            closing_time = request.POST['closing_time'] + ':00'
-            if recording_time == '00:30':
-                freq = '0.5H'
-            elif recording_time == '01:00':
-                freq = '1H'
-            time_list = pd.timedelta_range(start=opening_time, end=closing_time, freq=freq).tolist()
-            for i in time_list:
-                Time.objects.create(time=str(i)[7:12], day_id=day.id, service_id=service_id)
-            messages.success(request, "Day successfully added as working day!")
-            return redirect(service.get_absolute_url())
+            try:
+                with transaction.atomic():
+                    day = Date.objects.create(day=day_id, service_id=service_id)
+                    recording_time = request.POST['recording_time']
+                    opening_time = request.POST['opening_time'] + ':00'
+                    closing_time = request.POST['closing_time'] + ':00'
+
+                    if recording_time == '00:30':
+                        freq = '0.5H'
+                    elif recording_time == '01:00':
+                        freq = '1H'
+                    time_list = pd.timedelta_range(start=opening_time, end=closing_time, freq=freq).tolist()
+                    for i in time_list:
+                        Time.objects.create(time=str(i)[7:12], day_id=day.id, service_id=service_id)
+                    messages.success(request, "Day successfully added as working day!")
+                    return redirect(service.get_absolute_url())
+            except DatabaseError:
+                messages.error(request, "Alas. Something went wrong :( Please try again.")
         else:
             messages.error(request, "Incorrect data entered!")
             return redirect(service.get_absolute_url())

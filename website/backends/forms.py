@@ -1,7 +1,9 @@
 from django import forms
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.validators import RegexValidator
+from django.db import transaction
 from django.forms import TextInput
 
 from .models import Customer, Service
@@ -142,6 +144,26 @@ class ServiceForm(forms.ModelForm):
         fields = (
             'name', 'address', 'website', 'email', 'working_days', 'opening_time', 'closing_time',
             'phone_number')
+
+    def __init__(self, *args, **kwargs):
+        self._user = kwargs.pop('user')
+        self._recording_time = kwargs.pop('recording_time')
+        self._working_days = kwargs.pop('working_days')
+        super(ServiceForm, self).__init__(*args, **kwargs)
+
+    @transaction.atomic
+    def save(self, commit=True):
+        service = super(ServiceForm, self).save(commit=False)
+        service.owner = self._user
+
+        if commit:
+            service.save()
+            self.save_m2m()
+
+        service.recording_time.add(self._recording_time)
+        for day in self._working_days:
+            service.working_days.add(day)
+        return service.id
 
 
 class CustomerForm(forms.ModelForm):
