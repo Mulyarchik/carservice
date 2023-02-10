@@ -17,7 +17,7 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt .
 
 RUN pip install virtualenv && virtualenv -p python /app/venv
-RUN python -m pip install -r requirements.txt
+RUN pip install --user -r requirements.txt
 #copy entrypoint.sh
 COPY ./entrypoint.sh .
 

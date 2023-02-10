@@ -21,7 +21,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      POSTGRES_DB: 'carservice_test'
+      POSTGRES_DB: 'carservice'
       POSTGRES_USER: 'admin'
       POSTGRES_PASSWORD: 'admin'
 
