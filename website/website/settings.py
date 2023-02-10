@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-coo-95*=e+gkkknw)s0n*vf47w50z@znp^oz@$$eg&uhk3tzlc'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -69,22 +71,18 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'website.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'carservice_forum',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
+    "default": {
+        "ENGINE": config("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": config("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": config("SQL_USER", "user"),
+        "PASSWORD": config("SQL_PASSWORD", "password"),
+        "HOST": config("SQL_HOST", "localhost"),
+        "PORT": config("SQL_PORT", "5432"),
     }
 }
-
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -109,7 +107,16 @@ INTERNAL_IPS = [
 
 # setting for email: DEFAULT_FROM_EMAIL, SERVER_EMAIL, EMAIL_BACKEND, EMAIL_USE_TLS
 # EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_PORT
+# DEFAULT_FROM_EMAIL = 'email@mail.ru'
+# SERVER_EMAIL = 'email@mail.ru'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.mail.ru'
+# EMAIL_HOST_USER = 'email@mail.ru'
+# EMAIL_HOST_PASSWORD = 'password'
+# EMAIL_PORT = 587
 
+APIKEY_NEWSAPI = "42cdcaf28c304cd69e11a0a31d55acd9"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -130,7 +137,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static_root'),
+    os.path.join(BASE_DIR, 'static', 'static_root'),
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

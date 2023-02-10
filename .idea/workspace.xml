@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a5dd9e61-da55-4d1f-b37a-3937953d3550" name="Changes" comment="updated templates">
-      <change afterPath="$PROJECT_DIR$/website/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/static/static_root/css/stylesheet.css" afterDir="false" />
+    <list default="true" id="a5dd9e61-da55-4d1f-b37a-3937953d3550" name="Changes" comment="transferring parts of business logic to models and updating README.md">
+      <change afterPath="$PROJECT_DIR$/website/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/website/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/website/entrypoint.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/website/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/backends/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/backends/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/backends/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/backends/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/backends/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/static_root/css/stylesheet.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/templates/add_service.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/add_service.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/templates/list_of_services.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/list_of_services.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/templates/view_profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/view_profile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/website/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/website/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,22 +37,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/v_mul/PycharmProjects/website_carservice&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.django.DjangoModulesConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/v_mul/PycharmProjects/website_carservice",
+    "list.type.of.created.stylesheet": "CSS",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\v_mul\PycharmProjects\website_carservice\website\static_root\css" />
@@ -243,7 +235,13 @@
       <workItem from="1675510718305" duration="728000" />
       <workItem from="1675522070769" duration="2535000" />
       <workItem from="1675596100555" duration="1796000" />
-      <workItem from="1675672861257" duration="3742000" />
+      <workItem from="1675672861257" duration="4507000" />
+      <workItem from="1675705098854" duration="2551000" />
+      <workItem from="1675969128422" duration="28000" />
+      <workItem from="1675970199379" duration="11000" />
+      <workItem from="1675970294801" duration="1000" />
+      <workItem from="1676018139748" duration="2228000" />
+      <workItem from="1676021993855" duration="3434000" />
     </task>
     <task id="LOCAL-00001" summary="create app &quot;backends&quot;">
       <created>1673086621076</created>
@@ -322,11 +320,21 @@
       <option name="project" value="LOCAL" />
       <updated>1674589690180</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="transferring parts of business logic to models and updating README.md">
+      <created>1675677010037</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1675677010038</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="requirements.txt" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -351,7 +359,8 @@
     <MESSAGE value="added the ability to select a work schedule for an individual day" />
     <MESSAGE value="added page &quot;news&quot; and fixed minor bugs" />
     <MESSAGE value="updated templates" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated templates" />
+    <MESSAGE value="transferring parts of business logic to models and updating README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="transferring parts of business logic to models and updating README.md" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
