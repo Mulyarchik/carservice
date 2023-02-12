@@ -70,10 +70,10 @@ def user_signup(request):
             user = user_form.save(commit=False)
             user_form.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            messages.success(request, "You have successfully registered!")
+            messages.success(request, 'You have successfully registered!')
             return redirect('/')
         else:
-            messages.error(request, "Registration error :(")
+            messages.error(request, 'Registration error :(')
         context = {
             'user_form': user_form,
             'error': error
@@ -93,7 +93,7 @@ def user_login(request):
             user = form.get_user()
             login(request, user)
         else:
-            messages.error(request, "Wrong username/password!")
+            messages.error(request, 'Wrong username/password!')
         return redirect('/')
     else:
         form = LoginUserForm()
@@ -113,7 +113,7 @@ def add_service(request):
     recording_time = RecordingTime.objects.all()
 
     if not request.user.is_authenticated:
-        messages.error(request, "To connect the service you must be authorized!")
+        messages.error(request, 'To connect the service you must be authorized!')
         return redirect('/accounts/login/')
 
     days = DayOfWeek.objects.all()
@@ -124,8 +124,9 @@ def add_service(request):
             with transaction.atomic():
                 service_id = form.save()
                 Date().create(service_id, create_working_days(request.POST.getlist('working_days')))
+                messages.success(request, 'You service is successfully connected')
         else:
-            messages.error(request, "You have entered incorrect data!")
+            messages.error(request, 'You have entered incorrect data!')
         return redirect('/')
     else:
         form = ServiceForm(user=request.user, recording_time=None, working_days=None)
@@ -139,10 +140,10 @@ def add_service(request):
 
 
 def create_working_days(list_of_days):
-    # working day indexes
     working_day_indexes = []
     for i in list_of_days:
-        working_day_indexes.append(int(i))
+        day = DayOfWeek.objects.get(pk=i)
+        working_day_indexes.append(int(day.index))
 
     # number of days in a month
     days = calendar.monthrange(datetime.datetime.now().year, datetime.datetime.now().month)[1]
@@ -247,12 +248,12 @@ def add_customer(request, service_id, day_id, time_id):
                     date.save()
                     Time.objects.filter(pk=time_id).update(customer_id=date.id)
                     send_email_to_user(day_id, time_id, service_id)
-                    messages.success(request, "We inform you that the booking was successful!")
-                    messages.success(request, "A confirmation email has been sent to you with all the information.")
+                    messages.success(request, 'We inform you that the booking was successful!')
+                    messages.success(request, 'A confirmation email has been sent to you with all the information.')
             except FailSendMessage:
-                messages.error(request, "Failed to send email. Please repeat again :(")
+                messages.error(request, 'Failed to send email. Please repeat again :(')
             except Exception as e:
-                messages.error(request, "A system error has occurred. Please re-register :(")
+                messages.error(request, 'A system error has occurred. Please re-register :(')
             return redirect('/')
         else:
             messages.error(request, "Data entered incorrectly!")
@@ -275,7 +276,7 @@ def send_email_to_user(day_id, time_id, service_id):
 
     date_record = datetime.date(datetime.datetime.today().year, datetime.datetime.today().month,
                                 day.day).strftime('%A, %d %B')
-    subject = f"Signing up for an Car Workshop {service.name}"
+    subject = f'Signing up for an Car Workshop {service.name}'
     message = f'Dear {customer.surname} {customer.name}. \n' \
               f'We inform you that the booking was successful. \n' \
               f'You are signed up for a service at the {service.name} on {date_record} at {time}. \n' \
@@ -310,7 +311,7 @@ def profile(request, user_id):
         context = {}
 
     if not request.user.is_authenticated:
-        messages.error(request, "You do not have permission to view your profile!")
+        messages.error(request, 'You do not have permission to view your profile!')
         return redirect('/')
 
     return render(request, 'view_profile.html', context=context)
@@ -320,7 +321,7 @@ def day_add(request, service_id, day_id):
     service = Service.objects.get(pk=service_id)
 
     Date.objects.create(day=day_id, service_id=service_id)
-    messages.success(request, "Day successfully added as working day!")
+    messages.success(request, 'Day successfully added as working day!')
 
     return redirect(service.get_absolute_url())
 
@@ -330,11 +331,11 @@ def day_update(request, service_id, day_id):
     recording_time = RecordingTime.objects.all()
 
     if not request.user.is_authenticated and request.user.id != service.owner:
-        messages.error(request, "You do not have permission to perform these actions!")
+        messages.error(request, 'You do not have permission to perform these actions!')
         return redirect('/')
 
     if day_id < datetime.datetime.today().day:
-        messages.error(request, "This day cannot be active!")
+        messages.error(request, 'This day cannot be active!')
         return redirect(service.get_absolute_url())
 
     if request.method == 'POST':
@@ -357,9 +358,9 @@ def day_update(request, service_id, day_id):
                     messages.success(request, "Day successfully added as working day!")
                     return redirect(service.get_absolute_url())
             except DatabaseError:
-                messages.error(request, "Alas. Something went wrong :( Please try again.")
+                messages.error(request, 'Alas. Something went wrong :( Please try again.')
         else:
-            messages.error(request, "Incorrect data entered!")
+            messages.error(request, 'Incorrect data entered!')
             return redirect(service.get_absolute_url())
     else:
         form = CreateDay()
@@ -378,13 +379,13 @@ def day_delete(request, service_id, day_id):
     service = Service.objects.get(pk=service_id)
 
     if not request.user.is_authenticated and request.user.id != service.owner:
-        messages.error(request, "You do not have permission to perform these actions!")
+        messages.error(request, 'You do not have permission to perform these actions!')
         return redirect('/')
 
     try:
         Date.objects.get(pk=day_id).delete()
-        messages.success(request, "Day successfully marked as inactive!")
+        messages.success(request, 'Day successfully marked as inactive!')
     except ObjectDoesNotExist:
-        messages.error(request, "An error has occurred. Try again or contact administrator!")
+        messages.error(request, 'An error has occurred. Try again or contact administrator!')
 
     return redirect(service.get_absolute_url())

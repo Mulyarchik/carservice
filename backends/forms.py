@@ -151,6 +151,7 @@ class ServiceForm(forms.ModelForm):
         self._working_days = kwargs.pop('working_days')
         super(ServiceForm, self).__init__(*args, **kwargs)
 
+
     @transaction.atomic
     def save(self, commit=True):
         service = super(ServiceForm, self).save(commit=False)
@@ -158,11 +159,12 @@ class ServiceForm(forms.ModelForm):
 
         if commit:
             service.save()
-            self.save_m2m()
 
         service.recording_time.add(self._recording_time)
+
         for day in self._working_days:
             service.working_days.add(day)
+
         return service.id
 
 

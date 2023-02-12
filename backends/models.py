@@ -7,10 +7,11 @@ from django.db import models
 
 
 class DayOfWeek(models.Model):
-    name = models.CharField(max_length=10, verbose_name='tag')
+    day = models.CharField(max_length=10)
+    index = models.IntegerField(verbose_name='Index')
 
     def __str__(self):
-        return str(self.name)[:3]
+        return str(self.day)[:3]
 
     def create(self):
         pass
@@ -24,9 +25,9 @@ class RecordingTime(models.Model):
 
 
 class Service(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Name')
-    address = models.CharField(max_length=50, verbose_name='Address')
-    website = models.URLField(max_length=200, verbose_name='URL')
+    name = models.CharField(max_length=200, verbose_name='Name')
+    address = models.CharField(max_length=200, verbose_name='Address')
+    website = models.URLField(verbose_name='URL')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, blank=True)
     email = models.EmailField(verbose_name='Email')
     working_days = models.ManyToManyField(DayOfWeek, blank=True)

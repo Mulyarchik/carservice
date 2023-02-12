@@ -43,7 +43,7 @@ CarService - Add Service
                                             multiple="multiple"
                                             id="id_working_days">
                                         {% for day in days %}
-                                        <option value="{{ day.id }}">{{ day.name }}</option>
+                                        <option value="{{ day.pk }}">{{ day.day }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
