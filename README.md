@@ -22,7 +22,10 @@ $ cd carservice
 
 Set your settings in the ‘.env’ file, but defaults is enough just to try the service locally.
 
+To record in the service, update the email settings in the '.env' file
+
 Run docker compose to build and run the service and it’s dependencies.
+
 
 ```
 $ docker compose up -d --build
