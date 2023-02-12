@@ -3,8 +3,6 @@ version: '3.9'
 services:
   web:
     build: .
-    volumes:
-      - ./app/:/usr/src/app/
     ports:
       - "8080:8080"
     env_file:
