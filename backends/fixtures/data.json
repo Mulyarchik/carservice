@@ -1,0 +1,72 @@
+[
+  {
+    "model": "backends.RecordingTime",
+    "pk": 1,
+    "fields": {
+      "time": "00:30:00"
+    }
+  },
+  {
+    "model": "backends.RecordingTime",
+    "pk": 2,
+    "fields": {
+      "time": "01:00:00"
+    }
+  },
+  {
+    "model": "backends.DayOfWeek",
+    "pk": 1,
+    "fields": {
+      "day": "Monday",
+      "index": "1"
+    }
+  },
+  {
+    "model": "backends.DayOfWeek",
+    "pk": 2,
+    "fields": {
+      "day": "Tuesday",
+      "index": "2"
+    }
+  },
+  {
+    "model": "backends.DayOfWeek",
+    "pk": 3,
+    "fields": {
+      "day": "Wednesday",
+      "index": "3"
+    }
+  },
+  {
+    "model": "backends.DayOfWeek",
+    "pk": 4,
+    "fields": {
+      "day": "Thursday",
+      "index": "4"
+    }
+  },
+  {
+    "model": "backends.DayOfWeek",
+    "pk": 5,
+    "fields": {
+      "day": "Friday",
+      "index": "5"
+    }
+  },
+  {
+    "model": "backends.DayOfWeek",
+    "pk": 6,
+    "fields": {
+      "day": "Saturday",
+      "index": "6"
+    }
+  },
+  {
+    "model": "backends.DayOfWeek",
+    "pk": 7,
+    "fields": {
+      "day": "Sunday",
+      "index": "7"
+    }
+  }
+]

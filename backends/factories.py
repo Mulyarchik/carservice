@@ -52,6 +52,4 @@ class ServiceFactory(DjangoModelFactory):
     address = factory.Faker("street_address")
     website = factory.Faker("url")
     email = factory.Faker("email")
-    working_days = factory.RelatedFactory(DayOfWeekFactory)
-    recording_time = factory.RelatedFactory(RecordingTimeFactory)
     phone_number = '+375291234567'
