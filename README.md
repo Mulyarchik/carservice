@@ -43,7 +43,7 @@ Open in your browser:
 http://localhost:8080/
 ```
 
-(Optional) Populate a DB with a dummy data:
+(Optional)  Populate a DB with a dummy data:
 
 ```
 $ python manage.py loaddata data.json
