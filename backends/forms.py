@@ -205,6 +205,7 @@ class CustomerForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control',
                                       'type': 'text',
                                       'required': 'true',
+                                      'placeholder': "Phone number must be entered in the format: '+375(29)1234567'"
                                       }),
         validators=[
             RegexValidator(
