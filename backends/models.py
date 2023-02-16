@@ -34,9 +34,12 @@ class Service(models.Model):
     recording_time = models.ManyToManyField(RecordingTime, blank=True)
     opening_time = models.TimeField(max_length=5, verbose_name='Opening Time')
     closing_time = models.TimeField(max_length=5, verbose_name='Closing Time')
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,12}$',
-                                 message="Phone number must be entered in the format: '+375(29)12-12-123'. Up to 12 digits allowed.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=13, blank=True)
+    phone_number = models.CharField(max_length=20, validators=[
+        RegexValidator(
+            regex=r"^\+?375?\(?\d{2}\)\d{7}$",
+            message="Phone number must be entered in the format: '+375(29)1234567",
+        )
+    ])
 
     class Meta:
         verbose_name = 'Service'
@@ -100,13 +103,16 @@ class Time(models.Model):
 
 
 class Customer(models.Model):
-    surname = models.CharField(max_length=20, verbose_name='Surname')
-    name = models.CharField(max_length=20, verbose_name='Name')
-    patronymic = models.CharField(max_length=20, verbose_name='Patronymic')
-    car = models.CharField(max_length=40, verbose_name='Car')
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,12}$',
-                                 message="Phone number must be entered in the format: '+375(29)12-12-123'. Up to 12 digits allowed.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=13, blank=True)
+    surname = models.CharField(max_length=50, verbose_name='Surname')
+    name = models.CharField(max_length=50, verbose_name='Name')
+    patronymic = models.CharField(max_length=50, verbose_name='Patronymic')
+    car = models.CharField(max_length=50, verbose_name='Car')
+    phone_number = models.CharField(max_length=20, validators=[
+        RegexValidator(
+            regex=r"^\+?375?\(?\d{2}\)\d{7}$",
+            message="Phone number must be entered in the format: '+375(29)1234567",
+        )
+    ])
     email = models.EmailField(verbose_name='Email')
 
     def __str__(self) -> str:

@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.validators import RegexValidator
@@ -131,13 +130,18 @@ class ServiceForm(forms.ModelForm):
                                    label=("Closing Time"),
                                    widget=forms.TimeInput(attrs={'class': 'form-control', }))
 
-    phone_number = forms.RegexField(
+    phone_number = forms.CharField(
         label=("Phone number"),
         widget=forms.TextInput(attrs={'class': 'form-control',
                                       'type': 'text',
                                       'required': 'true',
                                       }),
-        regex=r'^\+?1?\d{9,15}$')
+        validators=[
+            RegexValidator(
+                "^\+?375?\(?\d{2}\)\d{7}$",
+                message="Phone number must be entered in the format: '+375(29)1234567'"
+            )
+        ])
 
     class Meta:
         model = Service
@@ -150,7 +154,6 @@ class ServiceForm(forms.ModelForm):
         self._recording_time = kwargs.pop('recording_time')
         self._working_days = kwargs.pop('working_days')
         super(ServiceForm, self).__init__(*args, **kwargs)
-
 
     @transaction.atomic
     def save(self, commit=True):
@@ -197,13 +200,18 @@ class CustomerForm(forms.ModelForm):
                                       'required': 'true',
                                       }))
 
-    phone_number = forms.RegexField(
+    phone_number = forms.CharField(
         label=("Phone number"),
         widget=forms.TextInput(attrs={'class': 'form-control',
                                       'type': 'text',
                                       'required': 'true',
                                       }),
-        regex=r'^\+?1?\d{9,15}$')
+        validators=[
+            RegexValidator(
+                "^\+?375?\(?\d{2}\)\d{7}$",
+                message="Phone number must be entered in the format: '+375(29)1234567'"
+            )
+        ])
 
     email = forms.EmailField(
         label=("Email"),
