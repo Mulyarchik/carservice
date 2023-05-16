@@ -123,7 +123,7 @@ def add_service(request):
         if form.is_valid():
             with transaction.atomic():
                 service_id = form.save()
-                Date().create(service_id, create_working_days(request.POST.getlist('working_days')))
+                create_working_days(service_id=service_id, list_of_days=request.POST.getlist('working_days'))
                 messages.success(request, 'You service is successfully connected')
         else:
             messages.error(request, 'You have entered incorrect data!')
@@ -139,15 +139,10 @@ def add_service(request):
     return render(request, 'add_service.html', context=context)
 
 
-def create_working_days(list_of_days):
-    working_day_indexes = []
-    for i in list_of_days:
-        day = DayOfWeek.objects.get(pk=i)
-        working_day_indexes.append(int(day.index))
+def create_working_days(service_id, list_of_days):
+    working_day_indexes = [int(i) for i in list_of_days]
 
-    # number of days in a month
     days = calendar.monthrange(datetime.datetime.now().year, datetime.datetime.now().month)[1]
-
     service_work_days = []
     for i in range(1, days + 1):
         obj = datetime.datetime(datetime.datetime.today().year, datetime.datetime.today().month, i).isoweekday()
@@ -155,7 +150,9 @@ def create_working_days(list_of_days):
             continue
         else:
             service_work_days.append(i)
-    return service_work_days
+    Date().create(service_id, service_work_days)
+
+    return True
 
 
 def service_selection(request):
@@ -175,22 +172,23 @@ def day_selection(request, service_id):
     # HTML calendar
     list1 = []
     text_calendar = []
+
     c = calendar.TextCalendar(calendar.MONDAY)
     for i in c.itermonthdays(datetime.datetime.today().year, datetime.datetime.today().month):
-        list1.append(i)
-    text_calendar.append(list1[:7])
-    text_calendar.append(list1[7:14])
-    text_calendar.append(list1[14:21])
-    text_calendar.append(list1[21:28])
-    text_calendar.append(list1[28:35])
-    text_calendar.append(list1[35:42])
+        list1.append(i)  # list1 = [0, 0, 0, 1, 2, 3, 4, ... , 31, 0, 0]
 
-    # все дни месяца
-    all_days = list(filter(lambda num: num != 0, list1))
+    indexes_for_iter = [0, 7, 7, 14, 14, 21, 21, 28, 28, 35, 35, 42]
+    index = iter(indexes_for_iter)
+    try:
+        while True:
+            text_calendar.append(list1[next(index):next(index)])
+    except StopIteration:
+        pass
+    finally:
+        del index  # text_calendar = [[1, 2, 3, 4, 5, 6, 7], [], ... , [... , 31, 0, 0, 0, 0]]
 
     # Monthly check
-    count_all_days = calendar.monthrange(datetime.datetime.today().year, datetime.datetime.today().month)[1]
-    if len(all_days) != count_all_days:
+    if datetime.datetime.now().day == 1:
         month_update(request, service_id)
 
     work_days = []
@@ -200,7 +198,7 @@ def day_selection(request, service_id):
         work_days.append(work_day.day)
 
     context = {
-        'all_days': text_calendar,
+        'text_calendar': text_calendar,
         'service': service,
         'work_days': work_days
     }
@@ -210,13 +208,13 @@ def day_selection(request, service_id):
 
 def month_update(request, service_id):
     service = Service.objects.get(pk=service_id)
-    Date.objects.filter(service_id=service_id)
+    Date.objects.filter(service_id=service_id).delete()
 
     index_work_days = []
     for i in service.working_days.all():
         index_work_days.append(i.id)
 
-    create_working_days(request, service_id, index_work_days)
+    create_working_days(service_id=service_id, list_of_days=index_work_days)
     return messages.success(request, "Schedule updated!")
 
 

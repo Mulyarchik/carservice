@@ -79,8 +79,8 @@ CarService - {{ service.name }}
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        {% for days in all_days %}
-                                        {% for day in days %}
+                                        {% for week in text_calendar %}
+                                        {% for day in week %}
                                         {% if day != 0 %}
 
                                             {% if day not in work_days %}
